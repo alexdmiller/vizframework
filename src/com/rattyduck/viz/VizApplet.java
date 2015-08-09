@@ -11,7 +11,7 @@ public class VizApplet extends PApplet {
   AudioPlayer audio;
   
   public void setup() {
-    size(200, 200, P3D);
+    size(this.width, this.height, P3D);
     
     Minim minim = new Minim(this);
     audio = minim.loadFile("reverie.mp3");

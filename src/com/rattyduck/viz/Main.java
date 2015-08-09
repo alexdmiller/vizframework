@@ -17,6 +17,10 @@ public class Main extends JFrame {
   PAppletContainer vizContainer;
   
   public Main() {
+    
+    viz = new VizApplet();
+    vizContainer = new PAppletContainer(viz);
+    
     this.setLayout(new BorderLayout());
     this.setLocation(-100, 0);
     
@@ -24,14 +28,6 @@ public class Main extends JFrame {
     add(startButton, BorderLayout.SOUTH);
     pack();
     setVisible(true);
-    
-    EventQueue.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        viz = new VizApplet();
-        vizContainer = new PAppletContainer(viz);
-      }
-  });
   }
   
   public class PAppletContainer extends JFrame {    
@@ -46,10 +42,10 @@ public class Main extends JFrame {
       
       applet.frame = this;
       applet.init();
+      
       applet.setPreferredSize(new Dimension(getWidth(), getHeight()));
       applet.setMinimumSize(new Dimension(getWidth(), getHeight()));
       applet.setSize(new Dimension(getWidth(), getHeight()));
-      setTitle("test");
       
       add(applet, BorderLayout.CENTER);
       pack();

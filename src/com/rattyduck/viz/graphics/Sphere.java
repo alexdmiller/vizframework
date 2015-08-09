@@ -30,8 +30,8 @@ public class Sphere {
   
   public void update(BeatDetect beat, AudioSource player) {
     if (player.mix.level() > this.threshold) {
-      if (beat.isRange(rangeStart, rangeEnd, rangeNum)) {
-        radius += 40 * player.mix.level();
+      if (beat.isRange(rangeStart, rangeEnd, rangeNum) && Math.random() > 0.5) {
+        radius += (20 + 5 * Math.random()) * player.mix.level();
       }
     }
     radius *= 0.95;

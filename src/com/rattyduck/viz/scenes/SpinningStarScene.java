@@ -12,7 +12,7 @@ import processing.core.PGraphics;
 public class SpinningStarScene extends Scene {
   private ArrayList<Sphere> spheres;
   private float cameraAngle;
-  final float SPHERE_SIZE = 500;
+  final float SPHERE_SIZE = 200;
   private BeatDetect beat;
 
   public SpinningStarScene(int width, int height, PGraphics g) {
@@ -25,7 +25,11 @@ public class SpinningStarScene extends Scene {
   
   public void start() {
     super.start();
-    createSpheres(0xFFFFFF, 200, 0, 6, 3);
+    
+    createSpheres(0xCCf8e7f8, 1000, 0, 6, 3);
+    createSpheres(0xCCfff394, 1000, 7, 20, 5);
+    createSpheres(0xCCffc994, 1000, 20, 25, 2);
+    
     g.camera(0, 0, 0, 0, 0, 100, 0, -1, 0);
   }
   
@@ -59,7 +63,7 @@ public class SpinningStarScene extends Scene {
     for (Sphere s : spheres) {
       s.update(beat, audio);
       g.strokeWeight(s.radius);
-      g.stroke(255);
+      g.stroke(s.c);
       g.point(s.x, s.y, s.z);
     }
   }
