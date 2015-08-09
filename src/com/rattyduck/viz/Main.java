@@ -1,8 +1,11 @@
 package com.rattyduck.viz;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -32,15 +35,20 @@ public class Main extends JFrame {
     
     public PAppletContainer(PApplet applet) {
       this.applet = applet;
-      this.setLayout(new BorderLayout());
+      BorderLayout layout = new BorderLayout();
+      layout.setVgap(0);
+      this.setLayout(layout);
       
       GraphicsDevice gd =
           GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
       gd.setFullScreenWindow(this);
-
+      setExtendedState(JFrame.MAXIMIZED_BOTH);
+      
       applet.frame = this;
-      setTitle("test");
       applet.init();
+      applet.setPreferredSize(new Dimension(getWidth(), getHeight()));
+      applet.setMinimumSize(new Dimension(getWidth(), getHeight()));
+      setTitle("test");
       
       add(applet, BorderLayout.CENTER);
       pack();
@@ -49,6 +57,11 @@ public class Main extends JFrame {
   }
   
   public static void main(String[] args) {
-    new Main();
+    EventQueue.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+            new Main();
+        }
+    });
   }
 }
