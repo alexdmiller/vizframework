@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,9 +17,6 @@ public class Main extends JFrame {
   PAppletContainer vizContainer;
   
   public Main() {
-    viz = new VizApplet();
-    vizContainer = new PAppletContainer(viz);
-    
     this.setLayout(new BorderLayout());
     this.setLocation(-100, 0);
     
@@ -28,15 +24,19 @@ public class Main extends JFrame {
     add(startButton, BorderLayout.SOUTH);
     pack();
     setVisible(true);
+    
+    EventQueue.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        viz = new VizApplet();
+        vizContainer = new PAppletContainer(viz);
+      }
+  });
   }
   
-  public class PAppletContainer extends JFrame {
-    private PApplet applet;
-    
+  public class PAppletContainer extends JFrame {    
     public PAppletContainer(PApplet applet) {
-      this.applet = applet;
       BorderLayout layout = new BorderLayout();
-      layout.setVgap(0);
       this.setLayout(layout);
       
       GraphicsDevice gd =
@@ -48,6 +48,7 @@ public class Main extends JFrame {
       applet.init();
       applet.setPreferredSize(new Dimension(getWidth(), getHeight()));
       applet.setMinimumSize(new Dimension(getWidth(), getHeight()));
+      applet.setSize(new Dimension(getWidth(), getHeight()));
       setTitle("test");
       
       add(applet, BorderLayout.CENTER);
