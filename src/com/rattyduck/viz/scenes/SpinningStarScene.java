@@ -26,9 +26,9 @@ public class SpinningStarScene extends Scene {
   public void start() {
     super.start();
     
-    createSpheres(0xCCf8e7f8, 1000, 0, 6, 3);
-    createSpheres(0xCCfff394, 1000, 7, 20, 5);
-    createSpheres(0xCCffc994, 1000, 20, 25, 2);
+    createSpheres(0xfff8e7f8, 1000, 0, 6, 3);
+    createSpheres(0xfffff394, 1000, 7, 20, 5);
+    createSpheres(0xffffc994, 1000, 20, 25, 2);
     
     g.camera(0, 0, 0, 0, 0, 100, 0, -1, 0);
   }

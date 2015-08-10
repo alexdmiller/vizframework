@@ -8,6 +8,7 @@ import processing.core.PGraphics;
 
 import java.util.HashMap;
 import java.util.List;
+import java.awt.Panel;
 import java.util.ArrayList;
 import java.util.Iterator;
 

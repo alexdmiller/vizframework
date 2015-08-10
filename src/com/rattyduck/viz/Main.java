@@ -9,30 +9,36 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Checkbox;
-import java.awt.CheckboxGroup;
  
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import processing.core.*; 
 
 public class Main extends JFrame {
+  private static final long serialVersionUID = 1L;
+  
   VizApplet viz;
   PAppletContainer vizContainer;
   Checkbox fullScreenCheckbox;
+  JPanel startPanel;
   
   public Main() {
-    viz = new VizApplet();
-    
     this.setLayout(new BorderLayout());
     
+    startPanel = new JPanel();
+    startPanel.setLayout(new BorderLayout());
+    
     fullScreenCheckbox = new Checkbox("Fullscreen", false);
-    add(fullScreenCheckbox);
+    startPanel.add(fullScreenCheckbox);
     
     JButton startButton = new JButton("Start");
     startButton.addActionListener(new StartAction());
-    add(startButton, BorderLayout.SOUTH);
+    startPanel.add(startButton, BorderLayout.SOUTH);
 
+    add(startPanel);
+    
     pack();
     setVisible(true);
   }
@@ -40,11 +46,19 @@ public class Main extends JFrame {
   class StartAction implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
+      viz = new VizApplet();
       vizContainer = new PAppletContainer(viz, fullScreenCheckbox.getState());
+      
+      remove(startPanel);
+      
+      add(viz.getControlPanel(), BorderLayout.CENTER);
+      pack();
     }
   }
   
-  public class PAppletContainer extends JFrame {    
+  class PAppletContainer extends JFrame {    
+    private static final long serialVersionUID = 1L;
+
     public PAppletContainer(PApplet applet, boolean fullScreen) {
       PAppletContainer self = this;
       
@@ -73,7 +87,6 @@ public class Main extends JFrame {
       
       add(applet, BorderLayout.CENTER);
       pack();
-      
     }
   }
   
@@ -81,7 +94,7 @@ public class Main extends JFrame {
     EventQueue.invokeLater(new Runnable() {
         @Override
         public void run() {
-            new Main();
+          new Main();
         }
     });
   }
