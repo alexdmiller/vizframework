@@ -9,16 +9,24 @@ import java.awt.Dimension;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import com.rattyduck.viz.scenes.SetupScene;
 import com.rattyduck.viz.scenes.SpinningStarScene;
+import com.rattyduck.viz.ui.StageControlPanel;
 
-public class VizApplet extends PApplet implements Controllable {
+public class VizApplet extends PApplet implements Controllable, Observer {
   private Stage stage;
   AudioPlayer audio;
+  ActionListener setupListener;
+  
+  public VizApplet(ActionListener setupListener) {
+    this.setupListener = setupListener;
+  }
   
   public void setup() {
     size(this.width, this.height, P3D);
@@ -31,6 +39,8 @@ public class VizApplet extends PApplet implements Controllable {
     getStage().addScene(new SpinningStarScene(this.width, this.height, g));
     
     getStage().goToScene(0);
+    
+    setupListener.actionPerformed(null);
   }
 
   public void draw() {
@@ -57,7 +67,6 @@ public class VizApplet extends PApplet implements Controllable {
   @Override
   public JPanel getControlPanel() {
     JPanel p = new JPanel();
-    p.setSize(new Dimension(100, 100));
     p.setLayout(new BorderLayout());
     
     JButton playMusic = new JButton("Play Music");
@@ -69,24 +78,14 @@ public class VizApplet extends PApplet implements Controllable {
     });
     p.add(playMusic, BorderLayout.NORTH);
     
-    JButton prev = new JButton("Previous");
-    prev.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        getStage().prevScene();
-      }
-    });
-    p.add(prev, BorderLayout.WEST);
-    
-    JButton next = new JButton("Next");
-    next.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        getStage().nextScene();
-      }
-    });
-    p.add(next, BorderLayout.EAST);
+    StageControlPanel stagePanel = new StageControlPanel(stage);
+    p.add(stagePanel, BorderLayout.SOUTH);
     
     return p;
+  }
+
+  @Override
+  public void update(Observable o, Object arg) {
+    
   }
 }

@@ -11,8 +11,9 @@ import java.util.List;
 import java.awt.Panel;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Observable;
 
-class Stage {
+public class Stage extends Observable {
   private Scene currentScene;
   private int currentSceneIndex;
   
@@ -43,6 +44,13 @@ class Stage {
     currentSceneIndex = index;
     activeScenes.add(currentScene);
     currentScene.start();
+    
+    setChanged();
+    notifyObservers();
+  }
+  
+  public Scene getCurrentScene() {
+    return currentScene;
   }
   
   public void nextScene() {

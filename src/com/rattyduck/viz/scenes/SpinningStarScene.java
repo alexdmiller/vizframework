@@ -16,7 +16,7 @@ public class SpinningStarScene extends Scene {
   private BeatDetect beat;
 
   public SpinningStarScene(int width, int height, PGraphics g) {
-    super(width, height, g);
+    super(width, height, g, "Spinning Stars");
     spheres = new ArrayList<Sphere>();
     beat = new BeatDetect();
     beat.detectMode(BeatDetect.FREQ_ENERGY);

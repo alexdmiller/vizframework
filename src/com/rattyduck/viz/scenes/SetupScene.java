@@ -10,7 +10,7 @@ public class SetupScene extends Scene {
   private BeatDetect beat;
 
   public SetupScene(int width, int height, PGraphics g) {
-    super(width, height, g);
+    super(width, height, g, "Setup");
     beat = new BeatDetect();
     beat.detectMode(BeatDetect.FREQ_ENERGY);
     beat.setSensitivity(300);

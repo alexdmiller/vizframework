@@ -46,13 +46,16 @@ public class Main extends JFrame {
   class StartAction implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-      viz = new VizApplet();
+      viz = new VizApplet(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          add(viz.getControlPanel(), BorderLayout.CENTER);
+          pack();
+        }
+      });
+      
       vizContainer = new PAppletContainer(viz, fullScreenCheckbox.getState());
-      
       remove(startPanel);
-      
-      add(viz.getControlPanel(), BorderLayout.CENTER);
-      pack();
     }
   }
   
