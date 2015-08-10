@@ -13,6 +13,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.rattyduck.viz.scenes.SetupScene;
@@ -21,11 +22,13 @@ import com.rattyduck.viz.ui.StageControlPanel;
 
 public class VizApplet extends PApplet implements Controllable, Observer {
   private Stage stage;
-  AudioPlayer audio;
-  ActionListener setupListener;
+  private JFrame frame;
+  private AudioPlayer audio;
+  private ActionListener setupListener;
   
-  public VizApplet(ActionListener setupListener) {
+  public VizApplet(ActionListener setupListener, JFrame frame) {
     this.setupListener = setupListener;
+    this.frame = frame;
   }
   
   public void setup() {
@@ -78,7 +81,7 @@ public class VizApplet extends PApplet implements Controllable, Observer {
     });
     p.add(playMusic, BorderLayout.NORTH);
     
-    StageControlPanel stagePanel = new StageControlPanel(stage);
+    StageControlPanel stagePanel = new StageControlPanel(stage, frame);
     p.add(stagePanel, BorderLayout.SOUTH);
     
     return p;

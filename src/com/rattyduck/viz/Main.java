@@ -34,29 +34,27 @@ public class Main extends JFrame {
     startPanel.add(fullScreenCheckbox);
     
     JButton startButton = new JButton("Start");
-    startButton.addActionListener(new StartAction());
+    JFrame self = this;
+    startButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        viz = new VizApplet(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              add(viz.getControlPanel(), BorderLayout.CENTER);
+              pack();
+            }
+          }, self);
+      
+        vizContainer = new PAppletContainer(viz, fullScreenCheckbox.getState());
+        remove(startPanel);
+      }
+    });
     startPanel.add(startButton, BorderLayout.SOUTH);
 
     add(startPanel);
     
     pack();
     setVisible(true);
-  }
-  
-  class StartAction implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      viz = new VizApplet(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          add(viz.getControlPanel(), BorderLayout.CENTER);
-          pack();
-        }
-      });
-      
-      vizContainer = new PAppletContainer(viz, fullScreenCheckbox.getState());
-      remove(startPanel);
-    }
   }
   
   class PAppletContainer extends JFrame {    

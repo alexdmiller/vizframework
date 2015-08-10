@@ -1,9 +1,11 @@
 package com.rattyduck.viz;
 
+import javax.swing.JPanel;
+
 import ddf.minim.AudioSource;
 import processing.core.PGraphics;
 
-public abstract class Scene {
+public abstract class Scene implements Controllable {
   private boolean isFinished;
   protected PGraphics g; 
   protected int width;
@@ -31,6 +33,10 @@ public abstract class Scene {
   
   public String getName() {
     return name;
+  }
+  
+  public JPanel getControlPanel() {
+    return new JPanel();
   }
 
   public abstract void render(int deltaMillis, AudioSource audio);

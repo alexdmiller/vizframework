@@ -2,6 +2,12 @@ package com.rattyduck.viz.scenes;
 
 import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import com.rattyduck.viz.Scene;
 import com.rattyduck.viz.graphics.Sphere;
 
@@ -13,6 +19,7 @@ public class SpinningStarScene extends Scene {
   private ArrayList<Sphere> spheres;
   private float cameraAngle;
   final float SPHERE_SIZE = 200;
+  private float rotationSpeed = 0.01f;
   private BeatDetect beat;
 
   public SpinningStarScene(int width, int height, PGraphics g) {
@@ -56,7 +63,7 @@ public class SpinningStarScene extends Scene {
     g.camera((float) Math.cos(cameraAngle) * 100, 0, (float) Math.sin(cameraAngle) * 100,
       0, 0, 0,
       0, -1, 0);
-    cameraAngle += 0.01;
+    cameraAngle += rotationSpeed;
     g.background(0);
     beat.detect(audio.mix);
     
@@ -66,6 +73,23 @@ public class SpinningStarScene extends Scene {
       g.stroke(s.c);
       g.point(s.x, s.y, s.z);
     }
+  }
+  
+  public JPanel getControlPanel() {
+    JPanel p = new JPanel();
+    p.setLayout(new BoxLayout(p, BoxLayout.PAGE_AXIS));
+    
+    JSlider starSpeedSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 1);
+    starSpeedSlider.addChangeListener(new ChangeListener() {
+      @Override
+      public void stateChanged(ChangeEvent e) {
+        JSlider source = (JSlider) e.getSource();
+        rotationSpeed = (float) (source.getValue() / 100.0 * (Math.PI / 10));
+      }
+    });
+    p.add(starSpeedSlider);
+    
+    return p;
   }
 }
 
