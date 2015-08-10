@@ -5,51 +5,75 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.Checkbox;
+import java.awt.CheckboxGroup;
+ 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-import processing.core.*;
+import processing.core.*; 
 
 public class Main extends JFrame {
-  JButton startButton;
   VizApplet viz;
   PAppletContainer vizContainer;
+  Checkbox fullScreenCheckbox;
   
   public Main() {
-    
     viz = new VizApplet();
-    vizContainer = new PAppletContainer(viz);
     
     this.setLayout(new BorderLayout());
-    this.setLocation(-100, 0);
     
-    startButton = new JButton("Start");
+    fullScreenCheckbox = new Checkbox("Fullscreen", false);
+    add(fullScreenCheckbox);
+    
+    JButton startButton = new JButton("Start");
+    startButton.addActionListener(new StartAction());
     add(startButton, BorderLayout.SOUTH);
+
     pack();
     setVisible(true);
   }
   
+  class StartAction implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      vizContainer = new PAppletContainer(viz, fullScreenCheckbox.getState());
+    }
+  }
+  
   public class PAppletContainer extends JFrame {    
-    public PAppletContainer(PApplet applet) {
+    public PAppletContainer(PApplet applet, boolean fullScreen) {
+      PAppletContainer self = this;
+      
       BorderLayout layout = new BorderLayout();
       this.setLayout(layout);
       
-      GraphicsDevice gd =
-          GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-      gd.setFullScreenWindow(this);
-      setExtendedState(JFrame.MAXIMIZED_BOTH);
+      setVisible(true);
       
-      applet.frame = this;
+      Dimension canvasSize;
+      if (fullScreen) {
+        GraphicsDevice gd =
+            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        gd.setFullScreenWindow(this);
+        canvasSize = Toolkit.getDefaultToolkit().getScreenSize();
+      } else {
+        canvasSize = new Dimension(800, 600);
+        this.setLocation(100, 100);        
+      }
+      
+      applet.frame = self;
       applet.init();
       
-      applet.setPreferredSize(new Dimension(getWidth(), getHeight()));
-      applet.setMinimumSize(new Dimension(getWidth(), getHeight()));
-      applet.setSize(new Dimension(getWidth(), getHeight()));
+      applet.setPreferredSize(canvasSize);
+      applet.setMinimumSize(canvasSize);
+      applet.setSize(canvasSize);
       
       add(applet, BorderLayout.CENTER);
       pack();
-      setVisible(true);
+      
     }
   }
   
