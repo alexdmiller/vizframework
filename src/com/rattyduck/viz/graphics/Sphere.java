@@ -4,7 +4,7 @@ import ddf.minim.AudioSource;
 import ddf.minim.analysis.BeatDetect;
 
 public class Sphere {
-  public float radius, x, y, z, threshold;
+  public float radius, x, y, z, threshold, vx, vy, vz;
   public int rangeStart, rangeEnd, rangeNum;
   public int c;
   
@@ -26,6 +26,9 @@ public class Sphere {
     this.rangeStart = rangeStart;
     this.rangeEnd = rangeEnd;
     this.rangeNum = rangeNum;
+    this.vx = 0;
+    this.vy = 0;
+    this.vz = 0;
   }
   
   public void update(BeatDetect beat, AudioSource player) {
@@ -35,5 +38,8 @@ public class Sphere {
       }
     }
     radius *= 0.95;
+    this.x += vx;
+    this.y += vy;
+    this.z += vz;
   }
 }

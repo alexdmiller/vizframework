@@ -16,8 +16,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.rattyduck.viz.scenes.HyperSpaceScene;
 import com.rattyduck.viz.scenes.SetupScene;
 import com.rattyduck.viz.scenes.SpinningStarScene;
+import com.rattyduck.viz.scenes.TreeScene;
 import com.rattyduck.viz.ui.StageControlPanel;
 
 public class VizApplet extends PApplet implements Controllable, Observer {
@@ -38,29 +40,19 @@ public class VizApplet extends PApplet implements Controllable, Observer {
     audio = minim.loadFile("reverie.mp3");
     stage = new Stage(audio, g);
     
+    getStage().addScene(new HyperSpaceScene(this.width, this.height, g));
     getStage().addScene(new SetupScene(this.width, this.height, g));
     getStage().addScene(new SpinningStarScene(this.width, this.height, g));
+    getStage().addScene(new TreeScene(this.width, this.height, g));
     
     getStage().goToScene(0);
+    audio.play();
     
     setupListener.actionPerformed(null);
   }
 
   public void draw() {
     getStage().update();
-  }
-  
-  public void keyPressed() {
-    if (key == ' ') {
-      audio.play();
-      getStage().nextScene();
-    }
-    if (keyCode == LEFT) {
-      getStage().prevScene();
-    }
-    if (keyCode == RIGHT) {
-      getStage().nextScene();
-    }
   }
 
   public Stage getStage() {
