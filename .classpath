@@ -23,5 +23,6 @@
 	<classpathentry kind="lib" path="tritonus_aos.jar"/>
 	<classpathentry kind="lib" path="tritonus_share.jar"/>
 	<classpathentry kind="lib" path="jl1.0.jar"/>
+	<classpathentry kind="lib" path="guava/library/guava.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

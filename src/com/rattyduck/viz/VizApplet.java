@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.rattyduck.viz.scenes.HyperSpaceScene;
+import com.rattyduck.viz.scenes.LatticeScene;
 import com.rattyduck.viz.scenes.SetupScene;
 import com.rattyduck.viz.scenes.SpinningStarScene;
 import com.rattyduck.viz.scenes.TreeScene;
@@ -40,10 +41,11 @@ public class VizApplet extends PApplet implements Controllable, Observer {
     audio = minim.loadFile("reverie.mp3");
     stage = new Stage(audio, g);
     
+    getStage().addScene(new LatticeScene(this.width, this.height, g));
     getStage().addScene(new HyperSpaceScene(this.width, this.height, g));
-    getStage().addScene(new SetupScene(this.width, this.height, g));
     getStage().addScene(new SpinningStarScene(this.width, this.height, g));
     getStage().addScene(new TreeScene(this.width, this.height, g));
+    getStage().addScene(new SetupScene(this.width, this.height, g));
     
     getStage().goToScene(0);
     audio.play();

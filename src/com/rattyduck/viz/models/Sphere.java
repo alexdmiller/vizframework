@@ -1,4 +1,4 @@
-package com.rattyduck.viz.graphics;
+package com.rattyduck.viz.models;
 
 import ddf.minim.AudioSource;
 import ddf.minim.analysis.BeatDetect;

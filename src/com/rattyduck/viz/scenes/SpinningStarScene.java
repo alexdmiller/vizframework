@@ -9,7 +9,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.rattyduck.viz.Scene;
-import com.rattyduck.viz.graphics.Sphere;
+import com.rattyduck.viz.models.Sphere;
 
 import ddf.minim.AudioSource;
 import ddf.minim.analysis.BeatDetect;
