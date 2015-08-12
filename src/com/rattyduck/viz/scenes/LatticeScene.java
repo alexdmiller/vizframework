@@ -34,7 +34,13 @@ public class LatticeScene extends Scene {
   public void start() {
     super.start();
     g.camera();
-    lattice.createNode(100, 100, 1, 1);
+    
+    for (int i = 0; i < 500; i++) {
+      lattice.createNode(
+          (float) Math.random() * width,
+          (float) Math.random() * height,
+          0, 0);
+    }
   }
   
   public void kill() {
@@ -47,13 +53,14 @@ public class LatticeScene extends Scene {
     g.background(0);
     g.noFill();
     g.stroke(255);
-    g.strokeWeight(10);
+    g.strokeWeight(5);
     
     for (Lattice.Node n : lattice.getNodes()) {
       g.point(n.pos.x, n.pos.y);
     }
     
-    for (Lattice.Edge e : lattice.getEdges()) {
+    g.strokeWeight(1);
+    for (Lattice.EdgeInfo e : lattice.getEdges()) {
       g.line(e.n1.pos.x, e.n1.pos.y, e.n2.pos.x, e.n2.pos.y);
     }
   }  

@@ -15,6 +15,10 @@ public class Lattice {
   private List<Node> nodes;
   private Map<Edge, EdgeInfo> edges;
   
+  public float repelThreshold = 10;
+  public float birthThreshold = 100;
+  public float breakThreshold = 100;
+  
   public Lattice() {
     this.nodes = new ArrayList<>();
     this.edges = new HashMap<>();
@@ -34,7 +38,7 @@ public class Lattice {
     
     edges.put(e, info);
   }
-  
+    
   public Iterable<Node> getNodes() {
     return nodes;
   }
@@ -44,9 +48,31 @@ public class Lattice {
   }
   
   public void update(int millis) {
-    for (Node n : nodes) {
-      n.update(millis);
+    for (int i = 0; i < nodes.size(); i++) {
+      Node n1 = nodes.get(i);
+      for (int j = i + 1; j < nodes.size(); j++) {
+        Node n2 = nodes.get(j);
+        float dist = n1.distance(n2);
+        
+        if (dist <= repelThreshold) {
+          n1.repel(n2);
+        }
+        
+        if (dist <= birthThreshold && !edges.containsKey(new Edge(n1, n2))) {
+          createEdge(n1, n2);
+        }
+      }
+      n1.update(millis);
     }
+    
+    Iterator<Map.Entry<Edge, EdgeInfo>> it = edges.entrySet().iterator();
+    while (it.hasNext()) {
+      Edge e = it.next().getKey();
+      if (e.length() > breakThreshold) {
+        e.detatch();
+        it.remove();
+      }
+    }  
   }
 
   public static class Node {
@@ -58,18 +84,34 @@ public class Lattice {
     public Node(float x, float y, float vx, float vy) {
       this.pos = new PVector(x, y);
       this.vel = new PVector(vx, vy);
+      this.edges = new ArrayList<>();
     }
     
     public void update(int millis) {
       this.pos.add(vel);
+      System.out.println(vel);  
     }
     
     public void repel(Node other) {
+      PVector diff = this.pos.get();
+      diff.sub(other.pos);
+      float dist = diff.mag();
+      float angle = diff.heading();
       
+      float force = 20 / dist;
+      PVector forceVector = new PVector(
+          (float) Math.cos(angle) * force, (float) Math.sin(angle) * force);
+      
+      this.vel.add(forceVector);
+      other.vel.sub(forceVector);
     }
     
     public void signal() {
       
+    }
+    
+    public float distance(Node other) {
+      return this.pos.dist(other.pos);
     }
   }
   
@@ -85,6 +127,15 @@ public class Lattice {
       int hashFirst = n1.hashCode();
       int hashSecond = n2.hashCode();
       return (hashFirst + hashSecond) * hashSecond + hashFirst;
+    }
+    
+    public float length() {
+      return n1.distance(n2);
+    }
+
+    public void detatch() {
+      n1.edges.remove(this);
+      n2.edges.remove(this);
     }
     
     public boolean equals(Object other) {
@@ -104,7 +155,7 @@ public class Lattice {
       this.n1 = n1;
       this.n2 = n2;
     }
-    
+       
     public Edge getEdge() {
       return new Edge(n1, n2);
     }
