@@ -25,17 +25,16 @@ public class LatticeScene extends Scene {
     super(width, height, g, "Lattice");
     
     beat = new BeatDetect();
-    beat.detectMode(BeatDetect.FREQ_ENERGY);
     beat.setSensitivity(300);
     
-    lattice = new Lattice();
+    lattice = new Lattice(width, height);
   }
   
   public void start() {
     super.start();
     g.camera();
     
-    for (int i = 0; i < 500; i++) {
+    for (int i = 0; i < 1000; i++) {
       lattice.createNode(
           (float) Math.random() * width,
           (float) Math.random() * height,
@@ -48,21 +47,28 @@ public class LatticeScene extends Scene {
   }
   
   public void render(int deltaMillis, AudioSource audio) {
+    beat.detect(audio.mix);
+    if (beat.isOnset()){
+      lattice.signalNodes(audio.mix.level() / 4);
+    }
     lattice.update(deltaMillis);
     
     g.background(0);
+
     g.noFill();
-    g.stroke(255);
-    g.strokeWeight(5);
-    
-    for (Lattice.Node n : lattice.getNodes()) {
-      g.point(n.pos.x, n.pos.y);
-    }
     
     g.strokeWeight(1);
     for (Lattice.EdgeInfo e : lattice.getEdges()) {
+      g.stroke(255, e.brightness);
       g.line(e.n1.pos.x, e.n1.pos.y, e.n2.pos.x, e.n2.pos.y);
     }
+    
+    g.strokeWeight(3);
+    for (Lattice.Node n : lattice.getNodes()) {
+      g.stroke(255, n.brightness);
+      g.point(n.pos.x, n.pos.y);
+    }
+
   }  
 }
 

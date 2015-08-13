@@ -36,6 +36,7 @@ public class VizApplet extends PApplet implements Controllable, Observer {
   
   public void setup() {
     size(this.width, this.height, P3D);
+    smooth();
     
     Minim minim = new Minim(this);
     audio = minim.loadFile("reverie.mp3");
@@ -49,7 +50,7 @@ public class VizApplet extends PApplet implements Controllable, Observer {
     
     getStage().goToScene(0);
     audio.play();
-    
+
     setupListener.actionPerformed(null);
   }
 
