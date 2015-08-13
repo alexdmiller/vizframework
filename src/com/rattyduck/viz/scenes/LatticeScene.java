@@ -59,7 +59,9 @@ public class LatticeScene extends Scene {
     
     g.strokeWeight(1);
     for (Lattice.EdgeInfo e : lattice.getEdges()) {
-      g.stroke(255, e.brightness);
+      float brightness = e.brightness *
+          (lattice.snappingThreshold - e.length()) / lattice.snappingThreshold;
+      g.stroke(255, brightness);
       g.line(e.n1.pos.x, e.n1.pos.y, e.n2.pos.x, e.n2.pos.y);
     }
     

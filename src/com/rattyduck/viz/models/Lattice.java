@@ -13,13 +13,15 @@ public class Lattice {
   private Map<Edge, EdgeInfo> edges;
   private int width, height; 
   
-  public float fadeSpeed = 10;
+  public float fadeSpeed = 5;
   public float minBrightness = 20;
-  public float friction = 0.9f;
-  private float repelThreshold = 20;
-  private float repelForce = 20;
-  private float birthThreshold = 40;
-  private float snappingThreshold = 60; 
+  public float brightnessNode = 255;
+  public float brightnessEdge = 150;
+  public float friction = 0.85f;
+  public float repelThreshold = 30;
+  public float repelForce = 20;
+  public float birthThreshold = 40;
+  public float snappingThreshold = 100; 
   
   public Lattice(int width, int height) {
     this.width = width;
@@ -137,14 +139,14 @@ public class Lattice {
     }
     
     public void signal() {
-      brightness = 255;
+      brightness = brightnessNode;
       PVector random = PVector.random2D();
-      random.mult(20);
+      random.mult((float) (20 * Math.random()));
       this.vel.add(random);
       
       if (this.brightness > minBrightness) this.brightness -= fadeSpeed;
       for (EdgeInfo e : connectedEdges) {
-        e.brightness = 255;
+        e.singal();
       }
     }
     
@@ -196,6 +198,10 @@ public class Lattice {
     public void detatch() {
       n1.connectedEdges.remove(this);
       n2.connectedEdges.remove(this);
+    }
+    
+    public void singal() {
+      brightness = brightnessEdge;
     }
   }
 }
