@@ -21,7 +21,8 @@ public class Lattice {
   public float repelThreshold = 30;
   public float repelForce = 20;
   public float birthThreshold = 40;
-  public float snappingThreshold = 100; 
+  public float snappingThreshold = 100;
+  public float signalSpeed; 
   
   public Lattice(int width, int height) {
     this.width = width;
@@ -146,7 +147,7 @@ public class Lattice {
       
       if (this.brightness > minBrightness) this.brightness -= fadeSpeed;
       for (EdgeInfo e : connectedEdges) {
-        e.singal();
+        e.signal(this);
       }
     }
     
@@ -182,6 +183,10 @@ public class Lattice {
     public Node n1, n2;
     public float brightness = minBrightness;
     
+    private float signalPosition;
+    private Node signalOrigin;
+    private Node signalTarget;
+    
     public EdgeInfo(Node n1, Node n2) {
       this.n1 = n1;
       this.n2 = n2;
@@ -189,6 +194,13 @@ public class Lattice {
     
     public void update() {
       if (this.brightness > minBrightness) this.brightness -= fadeSpeed;
+      signalPosition += signalSpeed;
+      
+      if (length() < signalPosition) {
+        signalPosition = -1;
+        signalOrigin = null;
+        signalTarget = null;
+      }
     }
 
     public float length() {
@@ -200,8 +212,15 @@ public class Lattice {
       n2.connectedEdges.remove(this);
     }
     
-    public void singal() {
-      brightness = brightnessEdge;
+    public void signal(Node origin) {
+      if (brightness <= minBrightness) {
+        brightness = brightnessEdge;
+        
+        if (origin != null) {
+          signalOrigin = origin;
+          signalTarget = origin == n1 ? n2 : n1;          
+        }
+      }
     }
   }
 }
