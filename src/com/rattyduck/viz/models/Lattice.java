@@ -14,17 +14,17 @@ public class Lattice {
   private int width, height; 
   
   public float fadeSpeed = 2;
-  public float minBrightness = 20;
+  public float minBrightness = 50;
   public float brightnessNode = 255;
-  public float brightnessEdge = 150;
-  public float friction = 0.85f;
-  public float repelThreshold = 30;
+  public float brightnessEdge = 255;
+  public float friction = 0.95f;
+  public float repelThreshold = 20;
   public float repelForce = 20;
-  public float birthThreshold = 40;
-  public float snappingThreshold = 100;
-  public float signalSpeed = 20;
-  public float jitter = 20;
-  public float maxSignalCooldown = 1000000;
+  public float birthThreshold = 30;
+  public float snappingThreshold = 50;
+  public float signalSpeed = 10;
+  public float jitter = 100;
+  public float maxSignalCooldown = 300;
   
   public Lattice(int width, int height) {
     this.width = width;
@@ -89,7 +89,7 @@ public class Lattice {
   public void signalNodes(float strength) {
     for (Node n : nodes) {
       if (Math.random() < strength) {
-        n.signal(false);
+        n.signal(false, strength * jitter);
       }
     }
   }
@@ -114,14 +114,18 @@ public class Lattice {
       
       if (pos.x < 0) {
         pos.x = 1;
+        vel.x *= -1;
       } else if (pos.x > width) {
         pos.x = width - 1;
+        vel.x *= -1;
       }
       
       if (pos.y < 0) {
         pos.y = 1;
+        vel.y *= -1;
       } else if (pos.y > height) {
         pos.y = height - 1;
+        vel.y *= -1;
       }
       
       if (brightness > 0) brightness -= fadeSpeed;
@@ -141,10 +145,10 @@ public class Lattice {
       other.vel.sub(forceVector);
     }
     
-    public void signal(boolean propagate) {
+    public void signal(boolean propagate, float strength) {
       brightness = brightnessNode;
       PVector random = PVector.random2D();
-      random.mult((float) (jitter * Math.random()));
+      random.mult((float) (strength * Math.random()));
       this.vel.add(random);
       
       if (this.brightness > minBrightness) this.brightness -= fadeSpeed;
@@ -183,8 +187,8 @@ public class Lattice {
   
   public class EdgeInfo {
     public Node n1, n2;
-    public float brightness = minBrightness;
-    public float signalCooldown = 0;
+    public float brightness;
+    public float signalCooldown;
     
     public float signalPosition = -1;
     public Node signalOrigin;
@@ -193,6 +197,8 @@ public class Lattice {
     public EdgeInfo(Node n1, Node n2) {
       this.n1 = n1;
       this.n2 = n2;
+      this.signalCooldown = 0;
+      this.brightness = minBrightness;
     }
     
     public void update() {
@@ -202,7 +208,7 @@ public class Lattice {
       if (signalPosition >= 0) {
         signalPosition += signalSpeed;
         if (length() < signalPosition) {
-          signalTarget.signal(true);
+          signalTarget.signal(true, 0);
           
           signalPosition = -1;
           signalOrigin = null;
@@ -221,16 +227,22 @@ public class Lattice {
     }
     
     public void signal(Node origin) {
-      if (signalCooldown == 0) {
+      // There are two types of signals: "organic" (caused randomly by music) and
+      // "forced" (propagated by signals from other nodes/edges). Forced signals
+      // override organic signals. If the edge is already carrying an organic signal,
+      // it is replaced by a forced signal. Otherwise, a signal cannot be carried
+      // on an edge that already has a signal.
+      if (origin != null && signalCooldown == 0) {
         signalCooldown = maxSignalCooldown;
         brightness = brightnessEdge;
         
-        if (origin != null) {
-          signalOrigin = origin;
-          signalTarget = origin == n1 ? n2 : n1;
-          signalPosition = 0;
-        }
-      } 
+        signalOrigin = origin;
+        signalTarget = origin == n1 ? n2 : n1;
+        signalPosition = 0;
+      } else {
+        // Organic signal
+        brightness = brightnessEdge;
+      }
     }
     
     public PVector getSignalPosition() {

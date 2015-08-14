@@ -31,8 +31,6 @@ public class LatticeScene extends Scene {
     
     beat = new BeatDetect();
     beat.setSensitivity(300);
-    
-    
   }
   
   public void start() {
@@ -42,7 +40,7 @@ public class LatticeScene extends Scene {
     
     lattice = new Lattice(width, height);
     
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 2000; i++) {
       lattice.createNode(
           (float) Math.random() * width,
           (float) Math.random() * height,
@@ -69,19 +67,22 @@ public class LatticeScene extends Scene {
     
     for (Lattice.EdgeInfo e : lattice.getEdges()) {
       float brightness = e.brightness *
-          (lattice.snappingThreshold - e.length()) / lattice.snappingThreshold;
-      g.stroke(255, brightness);
-      g.strokeWeight(1);
-      g.line(e.n1.pos.x, e.n1.pos.y, e.n2.pos.x, e.n2.pos.y);
-      
-      if (e.signalPosition >= 0) {
+          (lattice.snappingThreshold - e.length()) / lattice.snappingThreshold;      
+      if (e.signalCooldown > 0) {
+        g.stroke(255, 255, 0, brightness);
+        g.strokeWeight(1);
+        g.line(e.n1.pos.x, e.n1.pos.y, e.n2.pos.x, e.n2.pos.y);
         g.strokeWeight(5);
         PVector signal = e.getSignalPosition();
-        g.point(signal.x, signal.y);
+        if (signal != null) g.point(signal.x, signal.y);
+      } else {
+        g.stroke(255, brightness);
+        g.strokeWeight(1);
+        g.line(e.n1.pos.x, e.n1.pos.y, e.n2.pos.x, e.n2.pos.y);
       }
     }
     
-    g.strokeWeight(3);
+    g.strokeWeight(4);
     for (Lattice.Node n : lattice.getNodes()) {
       g.stroke(255, n.brightness);
       g.point(n.pos.x, n.pos.y);
@@ -99,10 +100,13 @@ public class LatticeScene extends Scene {
       public void actionPerformed(ActionEvent e) {
         int i = (int) Math.floor(Math.random() * lattice.getNodes().size());
         Node n = lattice.getNodes().get(i);
-        n.signal(true);
+        n.signal(true, 0);
       }
     });
     p.add(signalButton);
+    
+    
+    
     
     return p;
   }
