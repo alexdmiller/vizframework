@@ -1,9 +1,12 @@
 package com.rattyduck.viz.scenes;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
@@ -11,11 +14,13 @@ import javax.swing.event.ChangeListener;
 
 import com.rattyduck.viz.Scene;
 import com.rattyduck.viz.models.Lattice;
+import com.rattyduck.viz.models.Lattice.Node;
 import com.rattyduck.viz.models.Sphere;
 
 import ddf.minim.AudioSource;
 import ddf.minim.analysis.BeatDetect;
 import processing.core.PGraphics;
+import processing.core.PVector;
 
 public class LatticeScene extends Scene {
   private Lattice lattice;
@@ -27,12 +32,15 @@ public class LatticeScene extends Scene {
     beat = new BeatDetect();
     beat.setSensitivity(300);
     
-    lattice = new Lattice(width, height);
+    
   }
   
   public void start() {
+    
     super.start();
     g.camera();
+    
+    lattice = new Lattice(width, height);
     
     for (int i = 0; i < 1000; i++) {
       lattice.createNode(
@@ -44,6 +52,7 @@ public class LatticeScene extends Scene {
   
   public void kill() {
     super.kill();
+    lattice = null;
   }
   
   public void render(int deltaMillis, AudioSource audio) {
@@ -57,12 +66,19 @@ public class LatticeScene extends Scene {
 
     g.noFill();
     
-    g.strokeWeight(1);
+    
     for (Lattice.EdgeInfo e : lattice.getEdges()) {
       float brightness = e.brightness *
           (lattice.snappingThreshold - e.length()) / lattice.snappingThreshold;
       g.stroke(255, brightness);
+      g.strokeWeight(1);
       g.line(e.n1.pos.x, e.n1.pos.y, e.n2.pos.x, e.n2.pos.y);
+      
+      if (e.signalPosition >= 0) {
+        g.strokeWeight(5);
+        PVector signal = e.getSignalPosition();
+        g.point(signal.x, signal.y);
+      }
     }
     
     g.strokeWeight(3);
@@ -70,7 +86,25 @@ public class LatticeScene extends Scene {
       g.stroke(255, n.brightness);
       g.point(n.pos.x, n.pos.y);
     }
-
-  }  
+  }
+  
+  
+  public JPanel getControlPanel() {
+    JPanel p = new JPanel();
+    p.setLayout(new BoxLayout(p, BoxLayout.PAGE_AXIS));
+    
+    JButton signalButton = new JButton("Signal");
+    signalButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        int i = (int) Math.floor(Math.random() * lattice.getNodes().size());
+        Node n = lattice.getNodes().get(i);
+        n.signal(true);
+      }
+    });
+    p.add(signalButton);
+    
+    return p;
+  }
 }
 

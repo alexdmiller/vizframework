@@ -50,11 +50,14 @@ public class StageControlPanel extends JPanel implements Observer {
       }
     });
     add(next, BorderLayout.EAST);
+    
+    update(null, null);
   }
   
   @Override
   public void update(Observable o, Object arg) {
     sceneLabel.setText(stage.getCurrentScene().getName());
+    System.out.println("asdfasdfdf");
     
     if (sceneControl != null) {
       remove(sceneControl);

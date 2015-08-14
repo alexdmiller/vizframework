@@ -13,7 +13,7 @@ public class Lattice {
   private Map<Edge, EdgeInfo> edges;
   private int width, height; 
   
-  public float fadeSpeed = 5;
+  public float fadeSpeed = 2;
   public float minBrightness = 20;
   public float brightnessNode = 255;
   public float brightnessEdge = 150;
@@ -22,7 +22,9 @@ public class Lattice {
   public float repelForce = 20;
   public float birthThreshold = 40;
   public float snappingThreshold = 100;
-  public float signalSpeed; 
+  public float signalSpeed = 20;
+  public float jitter = 20;
+  public float maxSignalCooldown = 1000000;
   
   public Lattice(int width, int height) {
     this.width = width;
@@ -46,7 +48,7 @@ public class Lattice {
     edges.put(e, info);
   }
     
-  public Iterable<Node> getNodes() {
+  public List<Node> getNodes() {
     return nodes;
   }
   
@@ -87,7 +89,7 @@ public class Lattice {
   public void signalNodes(float strength) {
     for (Node n : nodes) {
       if (Math.random() < strength) {
-        n.signal();
+        n.signal(false);
       }
     }
   }
@@ -139,15 +141,15 @@ public class Lattice {
       other.vel.sub(forceVector);
     }
     
-    public void signal() {
+    public void signal(boolean propagate) {
       brightness = brightnessNode;
       PVector random = PVector.random2D();
-      random.mult((float) (20 * Math.random()));
+      random.mult((float) (jitter * Math.random()));
       this.vel.add(random);
       
       if (this.brightness > minBrightness) this.brightness -= fadeSpeed;
       for (EdgeInfo e : connectedEdges) {
-        e.signal(this);
+        e.signal(propagate ? this : null);
       }
     }
     
@@ -182,10 +184,11 @@ public class Lattice {
   public class EdgeInfo {
     public Node n1, n2;
     public float brightness = minBrightness;
+    public float signalCooldown = 0;
     
-    private float signalPosition;
-    private Node signalOrigin;
-    private Node signalTarget;
+    public float signalPosition = -1;
+    public Node signalOrigin;
+    public Node signalTarget;
     
     public EdgeInfo(Node n1, Node n2) {
       this.n1 = n1;
@@ -194,12 +197,17 @@ public class Lattice {
     
     public void update() {
       if (this.brightness > minBrightness) this.brightness -= fadeSpeed;
-      signalPosition += signalSpeed;
+      if (signalCooldown > 0) signalCooldown--;
       
-      if (length() < signalPosition) {
-        signalPosition = -1;
-        signalOrigin = null;
-        signalTarget = null;
+      if (signalPosition >= 0) {
+        signalPosition += signalSpeed;
+        if (length() < signalPosition) {
+          signalTarget.signal(true);
+          
+          signalPosition = -1;
+          signalOrigin = null;
+          signalTarget = null;
+        }
       }
     }
 
@@ -213,13 +221,28 @@ public class Lattice {
     }
     
     public void signal(Node origin) {
-      if (brightness <= minBrightness) {
+      if (signalCooldown == 0) {
+        signalCooldown = maxSignalCooldown;
         brightness = brightnessEdge;
         
         if (origin != null) {
           signalOrigin = origin;
-          signalTarget = origin == n1 ? n2 : n1;          
+          signalTarget = origin == n1 ? n2 : n1;
+          signalPosition = 0;
         }
+      } 
+    }
+    
+    public PVector getSignalPosition() {
+      if (signalPosition >= 0) {
+        float dx = signalTarget.pos.x - signalOrigin.pos.x;
+        float dy = signalTarget.pos.y - signalOrigin.pos.y;
+        float angle = (float) Math.atan2(dy, dx);
+        return new PVector(
+            signalOrigin.pos.x + (float) Math.cos(angle) * signalPosition,
+            signalOrigin.pos.y + (float) Math.sin(angle) * signalPosition);
+      } else {
+        return null;
       }
     }
   }
