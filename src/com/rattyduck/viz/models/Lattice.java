@@ -14,17 +14,18 @@ public class Lattice {
   private int width, height; 
   
   public float fadeSpeed = 2;
-  public float minBrightness = 50;
+  public float minBrightness = 100;
   public float brightnessNode = 255;
   public float brightnessEdge = 255;
   public float friction = 0.95f;
   public float repelThreshold = 20;
   public float repelForce = 20;
-  public float birthThreshold = 30;
-  public float snappingThreshold = 50;
+  public float birthThreshold = 100;
+  public float snappingThreshold = 200;
   public float signalSpeed = 10;
   public float jitter = 100;
-  public float maxSignalCooldown = 300;
+  public float maxSignalCooldown = 500;
+  public float forcedSignalJitter = 5;
   
   public Lattice(int width, int height) {
     this.width = width;
@@ -188,7 +189,7 @@ public class Lattice {
   public class EdgeInfo {
     public Node n1, n2;
     public float brightness;
-    public float signalCooldown;
+    public float signalCooldown = maxSignalCooldown;
     
     public float signalPosition = -1;
     public Node signalOrigin;
@@ -208,7 +209,7 @@ public class Lattice {
       if (signalPosition >= 0) {
         signalPosition += signalSpeed;
         if (length() < signalPosition) {
-          signalTarget.signal(true, 0);
+          signalTarget.signal(true, forcedSignalJitter);
           
           signalPosition = -1;
           signalOrigin = null;

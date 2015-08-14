@@ -40,7 +40,7 @@ public class LatticeScene extends Scene {
     
     lattice = new Lattice(width, height);
     
-    for (int i = 0; i < 2000; i++) {
+    for (int i = 0; i < 200; i++) {
       lattice.createNode(
           (float) Math.random() * width,
           (float) Math.random() * height,
@@ -104,9 +104,6 @@ public class LatticeScene extends Scene {
       }
     });
     p.add(signalButton);
-    
-    
-    
     
     return p;
   }
