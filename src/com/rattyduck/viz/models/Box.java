@@ -44,4 +44,18 @@ public class Box {
     result.add(new PVector(position.x + width, p.y, p.z));
     return result;
   }
+  
+  public PVector getCenter() {
+    return new PVector(
+        position.x + width / 2,
+        position.y + height / 2,
+        position.z + depth / 2);
+  }
+  
+  public PVector randomPoint() {
+    return new PVector(
+        (float) (position.x + Math.random() * width),
+        (float) (position.y + Math.random() * height),
+        (float) (position.z + Math.random() * depth));
+  }
 }

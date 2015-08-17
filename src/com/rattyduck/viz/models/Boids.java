@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.common.collect.EvictingQueue;
 import com.rattyduck.viz.models.Boids.Boid;
 
 import processing.core.PVector;
 
 public class Boids implements Iterable<Boid> {
-  public float maxSpeed = 6;
+  public float maxSpeed = 5;
   public float maxSteerForce = 0.1f;
-  public float neighborhoodRadius = 50;
+  public float neighborhoodRadius = 100;
   
   public float separationWeight = 10;
   public float cohesionWeight = 1;
@@ -33,10 +34,6 @@ public class Boids implements Iterable<Boid> {
     }
   }
   
-  public void create(float x, float y, float z) {
-    boids.add(new Boid(new PVector(x, y, z)));
-  }
-  
   @Override
   public Iterator<Boid> iterator() {
     return boids.iterator();
@@ -47,6 +44,9 @@ public class Boids implements Iterable<Boid> {
   }
   
   public class Boid {
+    private static final int HISTORY_SIZE = 100;    
+    
+    public EvictingQueue<PVector> history;
     public PVector pos, vel, acc;
     public PVector alignment, cohesion, separation;
     
@@ -54,6 +54,11 @@ public class Boids implements Iterable<Boid> {
       this.pos = pos.get();
       vel = new PVector();
       acc = new PVector();
+      history = EvictingQueue.create(HISTORY_SIZE);
+    }
+    
+    public Iterable<PVector> getHistory() {
+      return history;
     }
     
     public void update(int millis) {
@@ -64,20 +69,25 @@ public class Boids implements Iterable<Boid> {
       vel.limit(maxSpeed);
       pos.add(vel);
       acc.mult(0);
+      
+      history.add(pos.get());
     }
     
-    public PVector avoid(PVector target) {
+    public PVector avoid(PVector target, boolean weighted) {
       PVector steer = new PVector();
       steer.set(PVector.sub(pos, target));
-      float d = PVector.dist(pos, target);
-      steer.mult(1 / (d * d));
+      steer.normalize();
+      if (weighted) {
+        float d = PVector.dist(pos, target);
+        steer.mult(1 / d);        
+      }
       return steer;
     }
     
     public void bound(Box bounds) {
       List<PVector> projectedPoints = bounds.getProjectedPoints(pos);
       for (PVector p : projectedPoints) {
-        acc.add(PVector.mult(avoid(p), avoidWeight));
+        acc.add(PVector.mult(avoid(p, true), avoidWeight));
       }
     }
     
@@ -132,5 +142,9 @@ public class Boids implements Iterable<Boid> {
       separationForce.limit(maxSteerForce);
       return separationForce;
     }
+  }
+
+  public void createRandomBoid() {
+    boids.add(new Boid(bounds.randomPoint()));
   }
 }

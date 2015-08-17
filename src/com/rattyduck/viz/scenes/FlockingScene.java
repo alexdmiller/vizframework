@@ -21,6 +21,7 @@ import processing.core.PVector;
 public class FlockingScene extends Scene {
   private Boids boids;
   private BeatDetect beat;
+  private static final int NUM_BOIDS = 300;
   
   public FlockingScene(int width, int height, PGraphics g) {
     super(width, height, g, "Bugs");
@@ -36,12 +37,8 @@ public class FlockingScene extends Scene {
     super.start();
     g.camera();
     
-    for (int i = 0; i < 1000; i++) {
-      Box bounds = boids.getBounds();
-      boids.create(
-          (float) (bounds.getPosition().x + Math.random() * bounds.getWidth()),
-          (float) (bounds.getPosition().y + Math.random() * bounds.getHeight()),
-          (float) (bounds.getPosition().z + Math.random() * bounds.getDepth()));
+    for (int i = 0; i < NUM_BOIDS; i++) {
+      boids.createRandomBoid();
     }
   }
   
@@ -51,36 +48,33 @@ public class FlockingScene extends Scene {
   
   public void render(int deltaMillis, AudioSource audio) {
     boids.update(deltaMillis);
-
-    g.strokeWeight(3);
+    
+    beat.detect(audio.mix);
+    
+    g.strokeWeight(1);
     g.stroke(255);
-    for (Boids.Boid b : boids) {
+    for (Boids.Boid b : boids) {      
       g.stroke(255);
       
       PVector direction = b.vel.get();
       direction.normalize();
-      direction.mult(10);
+      direction.mult(20);
       
-      g.line(
-          b.pos.x,
-          b.pos.y,
-          b.pos.z,
-          b.pos.x + direction.x,
-          b.pos.y + direction.y,
-          b.pos.z + direction.z);
+//      g.pushMatrix();
+//      g.translate(b.pos.x, b.pos.y, b.pos.z);
+//      g.rotateY((float) Math.atan2(-b.vel.z, b.vel.x));
+//      g.rotateZ((float) Math.asin(b.vel.y / b.vel.mag()));
+//      g.line(0, 0, 0, 10, 0, 0);
+//      g.popMatrix();
+      
+      PVector last = null;
+      for (PVector p : b.getHistory()) {
+        if (last != null) {
+          g.line(last.x, last.y, last.z, p.x, p.y, p.z);
+        }
+        last = p;
+      }
     }
-    
-    g.stroke(255);
-    g.noFill();
-    g.pushMatrix();
-    
-    Box bounds = boids.getBounds();
-    g.translate(
-        bounds.getPosition().x + bounds.getWidth() / 2,
-        bounds.getPosition().y + bounds.getHeight() / 2,
-        bounds.getPosition().z + bounds.getDepth() / 2);
-    g.box(bounds.getWidth(), bounds.getHeight(), bounds.getDepth());
-    g.popMatrix();
   }
   
   public JPanel getControlPanel() {
