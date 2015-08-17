@@ -59,11 +59,8 @@ public class LatticeScene extends Scene {
       lattice.signalNodes(audio.mix.level() / 4);
     }
     lattice.update(deltaMillis);
-    
     g.background(0);
-
     g.noFill();
-    
     
     for (Lattice.EdgeInfo e : lattice.getEdges()) {
       float brightness = e.brightness *
