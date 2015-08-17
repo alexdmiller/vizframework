@@ -25,7 +25,7 @@ public class FlockingScene extends Scene {
     beat = new BeatDetect();
     beat.setSensitivity(300);
     
-    bounds = new Box(new PVector(), width, height, 100);
+    bounds = new Box(new PVector(0, 0, -1200), width, height, 1000);
   }
   
   public void start() {
@@ -34,9 +34,9 @@ public class FlockingScene extends Scene {
     
     for (int i = 0; i < 1000; i++) {
       boids.add(new Boid(new PVector(
-          (float) Math.random() * bounds.getWidth(),
-          (float) Math.random() * bounds.getHeight(),
-          (float) Math.random() * bounds.getDepth())));
+          (float) (bounds.getPosition().x + Math.random() * bounds.getWidth()),
+          (float) (bounds.getPosition().y + Math.random() * bounds.getHeight()),
+          (float) (bounds.getPosition().z + Math.random() * bounds.getDepth()))));
     }
   }
   
@@ -47,13 +47,22 @@ public class FlockingScene extends Scene {
   public void render(int deltaMillis, AudioSource audio) {
     g.strokeWeight(3);
     g.stroke(255);
-    PVector center = new PVector(width / 2, 0, 0);
     for (Boid b : boids) {
-      //b.bound(bounds);
-      b.acc.add(b.avoid(center));
+      b.bound(bounds);
       b.update(deltaMillis, boids);
+      
+      g.stroke(255);
       g.point(b.pos.x, b.pos.y, b.pos.z);
     }
+    
+    g.stroke(255);
+    g.noFill();
+    g.pushMatrix();
+    g.translate(
+        bounds.getPosition().x + bounds.getWidth() / 2,
+        bounds.getPosition().y + bounds.getHeight() / 2,
+        bounds.getPosition().z + bounds.getDepth() / 2);
+    g.box(bounds.getWidth(), bounds.getHeight(), bounds.getDepth());
+    g.popMatrix();
   }
 }
-

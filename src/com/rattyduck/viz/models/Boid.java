@@ -5,13 +5,14 @@ import java.util.List;
 import processing.core.PVector;
 
 public class Boid {
-  public static final float MAX_SPEED = 4;
+  public static final float MAX_SPEED = 6;
   public static final float MAX_STEER_FORCE = 0.1f;
-  public static final float NEIGHBORHOOD_RADIUS = 100;
+  public static final float NEIGHBORHOOD_RADIUS = 50;
   
-  public static final float SEPARATION_WEIGHT = 1;
-  public static final float COHESION_WEIGHT = 1f;
-  public static final float ALIGNMENT_WEIGHT = 5;
+  public static final float SEPARATION_WEIGHT = 10;
+  public static final float COHESION_WEIGHT = 1;
+  public static final float ALIGNMENT_WEIGHT = 3;
+  public static final float AVOID_WEIGHT = 20;
   
   public PVector pos, vel, acc;
   public PVector alignment, cohesion, separation;
@@ -26,7 +27,6 @@ public class Boid {
     acc.add(PVector.mult(alignment(boids), ALIGNMENT_WEIGHT));
     acc.add(PVector.mult(cohesion(boids), COHESION_WEIGHT));
     acc.add(PVector.mult(separation(boids), SEPARATION_WEIGHT));
-
     vel.add(acc);
     vel.limit(MAX_SPEED);
     pos.add(vel);
@@ -55,14 +55,14 @@ public class Boid {
     PVector steer = new PVector();
     steer.set(PVector.sub(pos, target));
     float d = PVector.dist(pos, target);
-    steer.mult(1 / d * d);
+    steer.mult(1 / (d * d));
     return steer;
   }
   
   public void bound(Box bounds) {
     List<PVector> projectedPoints = bounds.getProjectedPoints(pos);
     for (PVector p : projectedPoints) {
-      acc.add(avoid(p));
+      acc.add(PVector.mult(avoid(p), AVOID_WEIGHT));
     }
   }
   
@@ -76,7 +76,6 @@ public class Boid {
         total++;
       }
     }
-    averageVelocity.div(total);
     if (total > 0) {
       averageVelocity.div(total);
     }
@@ -94,11 +93,13 @@ public class Boid {
         total++;
       }
     }
-    if (total > 0) {
-      averagePosition.div(total);
+    if (total == 0) {
+      return new PVector();
     }
+    averagePosition.div(total);
     PVector cohesionForce = PVector.sub(averagePosition, this.pos);
     cohesionForce.normalize();
+    cohesionForce.limit(MAX_STEER_FORCE);
     return cohesionForce;
   }
 
@@ -113,6 +114,7 @@ public class Boid {
         separationForce.add(f);
       }
     }
+    separationForce.limit(MAX_STEER_FORCE);
     return separationForce;
   }
 }
