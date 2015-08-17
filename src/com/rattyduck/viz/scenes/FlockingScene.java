@@ -3,6 +3,12 @@ package com.rattyduck.viz.scenes;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import com.rattyduck.viz.Scene;
 import com.rattyduck.viz.models.Boids;
 import com.rattyduck.viz.models.Box;
@@ -19,7 +25,7 @@ public class FlockingScene extends Scene {
   public FlockingScene(int width, int height, PGraphics g) {
     super(width, height, g, "Bugs");
     
-    Box bounds = new Box(new PVector(-width/2, -height/2, -1000), width * 2, height * 2, 1000);
+    Box bounds = new Box(new PVector(0, 0, -500), width, height, 1000);
     boids = new Boids(bounds);
     
     beat = new BeatDetect();
@@ -50,7 +56,18 @@ public class FlockingScene extends Scene {
     g.stroke(255);
     for (Boids.Boid b : boids) {
       g.stroke(255);
-      g.point(b.pos.x, b.pos.y, b.pos.z);
+      
+      PVector direction = b.vel.get();
+      direction.normalize();
+      direction.mult(10);
+      
+      g.line(
+          b.pos.x,
+          b.pos.y,
+          b.pos.z,
+          b.pos.x + direction.x,
+          b.pos.y + direction.y,
+          b.pos.z + direction.z);
     }
     
     g.stroke(255);
@@ -64,5 +81,52 @@ public class FlockingScene extends Scene {
         bounds.getPosition().z + bounds.getDepth() / 2);
     g.box(bounds.getWidth(), bounds.getHeight(), bounds.getDepth());
     g.popMatrix();
+  }
+  
+  public JPanel getControlPanel() {
+    JPanel p = new JPanel();
+    p.setLayout(new BoxLayout(p, BoxLayout.PAGE_AXIS));
+    
+    JSlider alignmentSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 1);
+    alignmentSlider.addChangeListener(new ChangeListener() {
+      @Override
+      public void stateChanged(ChangeEvent e) {
+        JSlider source = (JSlider) e.getSource();
+        boids.alignmentWeight = (float) source.getValue();
+      }
+    });
+    p.add(alignmentSlider);
+    
+    JSlider cohesionSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 1);
+    cohesionSlider.addChangeListener(new ChangeListener() {
+      @Override
+      public void stateChanged(ChangeEvent e) {
+        JSlider source = (JSlider) e.getSource();
+        boids.cohesionWeight = (float) source.getValue();
+      }
+    });
+    p.add(cohesionSlider);
+    
+    JSlider separationSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 1);
+    separationSlider.addChangeListener(new ChangeListener() {
+      @Override
+      public void stateChanged(ChangeEvent e) {
+        JSlider source = (JSlider) e.getSource();
+        boids.separationWeight = (float) source.getValue();
+      }
+    });
+    p.add(separationSlider);
+    
+    JSlider neighborhoodSlider = new JSlider(JSlider.HORIZONTAL, 0, 500, 1);
+    separationSlider.addChangeListener(new ChangeListener() {
+      @Override
+      public void stateChanged(ChangeEvent e) {
+        JSlider source = (JSlider) e.getSource();
+        boids.neighborhoodRadius = (float) source.getValue();
+      }
+    });
+    p.add(neighborhoodSlider);
+    
+    return p;
   }
 }
