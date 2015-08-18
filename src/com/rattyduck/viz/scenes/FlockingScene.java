@@ -11,7 +11,12 @@ import javax.swing.event.ChangeListener;
 
 import com.rattyduck.viz.Scene;
 import com.rattyduck.viz.models.Boids;
+import com.rattyduck.viz.models.Boids.Boid;
 import com.rattyduck.viz.models.Box;
+import com.rattyduck.viz.renderers.BoidRenderer;
+import com.rattyduck.viz.renderers.ButterflyBoidRenderer;
+import com.rattyduck.viz.renderers.SimpleBoidRenderer;
+import com.rattyduck.viz.renderers.WormBoidRenderer;
 
 import ddf.minim.AudioSource;
 import ddf.minim.analysis.BeatDetect;
@@ -20,6 +25,7 @@ import processing.core.PVector;
 
 public class FlockingScene extends Scene {
   private Boids boids;
+  private List<BoidRenderer> renderers;
   private BeatDetect beat;
   private static final int NUM_BOIDS = 300;
   
@@ -28,6 +34,8 @@ public class FlockingScene extends Scene {
     
     Box bounds = new Box(new PVector(0, 0, -500), width, height, 1000);
     boids = new Boids(bounds);
+    
+    renderers = new ArrayList<>();
     
     beat = new BeatDetect();
     beat.setSensitivity(300);
@@ -38,7 +46,8 @@ public class FlockingScene extends Scene {
     g.camera();
     
     for (int i = 0; i < NUM_BOIDS; i++) {
-      boids.createRandomBoid();
+      Boid b = boids.createRandomBoid();
+      renderers.add(new ButterflyBoidRenderer(b));
     }
   }
   
@@ -48,32 +57,9 @@ public class FlockingScene extends Scene {
   
   public void render(int deltaMillis, AudioSource audio) {
     boids.update(deltaMillis);
-    
     beat.detect(audio.mix);
-    
-    g.strokeWeight(1);
-    g.stroke(255);
-    for (Boids.Boid b : boids) {      
-      g.stroke(255);
-      
-      PVector direction = b.vel.get();
-      direction.normalize();
-      direction.mult(20);
-      
-//      g.pushMatrix();
-//      g.translate(b.pos.x, b.pos.y, b.pos.z);
-//      g.rotateY((float) Math.atan2(-b.vel.z, b.vel.x));
-//      g.rotateZ((float) Math.asin(b.vel.y / b.vel.mag()));
-//      g.line(0, 0, 0, 10, 0, 0);
-//      g.popMatrix();
-      
-      PVector last = null;
-      for (PVector p : b.getHistory()) {
-        if (last != null) {
-          g.line(last.x, last.y, last.z, p.x, p.y, p.z);
-        }
-        last = p;
-      }
+    for (BoidRenderer br : renderers) {
+      br.render(g, deltaMillis);
     }
   }
   

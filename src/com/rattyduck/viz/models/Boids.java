@@ -43,10 +43,7 @@ public class Boids implements Iterable<Boid> {
     return bounds;
   }
   
-  public class Boid {
-    private static final int HISTORY_SIZE = 100;    
-    
-    public EvictingQueue<PVector> history;
+  public class Boid {    
     public PVector pos, vel, acc;
     public PVector alignment, cohesion, separation;
     
@@ -54,11 +51,6 @@ public class Boids implements Iterable<Boid> {
       this.pos = pos.get();
       vel = new PVector();
       acc = new PVector();
-      history = EvictingQueue.create(HISTORY_SIZE);
-    }
-    
-    public Iterable<PVector> getHistory() {
-      return history;
     }
     
     public void update(int millis) {
@@ -69,8 +61,6 @@ public class Boids implements Iterable<Boid> {
       vel.limit(maxSpeed);
       pos.add(vel);
       acc.mult(0);
-      
-      history.add(pos.get());
     }
     
     public PVector avoid(PVector target, boolean weighted) {
@@ -144,7 +134,9 @@ public class Boids implements Iterable<Boid> {
     }
   }
 
-  public void createRandomBoid() {
-    boids.add(new Boid(bounds.randomPoint()));
+  public Boid createRandomBoid() {
+    Boid b = new Boid(bounds.randomPoint());
+    boids.add(b);
+    return b;
   }
 }
