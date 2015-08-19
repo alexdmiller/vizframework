@@ -7,7 +7,7 @@ import ddf.minim.analysis.BeatDetect;
 import processing.core.PGraphics;
 
 public class SetupScene extends Scene {
-  private BeatDetect beat;
+  private transient BeatDetect beat;
 
   public SetupScene(int width, int height, PGraphics g) {
     super(width, height, g, "Setup");

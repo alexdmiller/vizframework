@@ -1,12 +1,6 @@
 package com.rattyduck.viz;
 
-import processing.core.PApplet;
-import ddf.minim.Minim;
-import ddf.minim.AudioPlayer;
-
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
@@ -21,8 +15,11 @@ import com.rattyduck.viz.scenes.HyperSpaceScene;
 import com.rattyduck.viz.scenes.LatticeScene;
 import com.rattyduck.viz.scenes.SetupScene;
 import com.rattyduck.viz.scenes.SpinningStarScene;
-import com.rattyduck.viz.scenes.TreeScene;
 import com.rattyduck.viz.ui.StageControlPanel;
+
+import ddf.minim.AudioPlayer;
+import ddf.minim.Minim;
+import processing.core.PApplet;
 
 public class VizApplet extends PApplet implements Controllable, Observer {
   private Stage stage;
@@ -47,7 +44,6 @@ public class VizApplet extends PApplet implements Controllable, Observer {
     getStage().addScene(new LatticeScene(this.width, this.height, g));
     getStage().addScene(new HyperSpaceScene(this.width, this.height, g));
     getStage().addScene(new SpinningStarScene(this.width, this.height, g));
-    getStage().addScene(new TreeScene(this.width, this.height, g));
     getStage().addScene(new SetupScene(this.width, this.height, g));
     
     getStage().goToScene(0);

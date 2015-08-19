@@ -3,12 +3,6 @@ package com.rattyduck.viz.scenes;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import com.rattyduck.viz.Scene;
 import com.rattyduck.viz.models.Sphere;
 
@@ -17,11 +11,10 @@ import ddf.minim.analysis.BeatDetect;
 import processing.core.PGraphics;
 
 public class HyperSpaceScene extends Scene {
-  private ArrayList<Sphere> spheres;
-  private float cameraAngle;
-  final float SPHERE_SIZE = 200;
-  private float rotationSpeed = 0.01f;
-  private BeatDetect beat;
+  public float sphereSize = 200;
+  
+  private transient ArrayList<Sphere> spheres;
+  private transient BeatDetect beat;
 
   public HyperSpaceScene(int width, int height, PGraphics g) {
     super(width, height, g, "Hyperspace");
@@ -65,23 +58,6 @@ public class HyperSpaceScene extends Scene {
         g.point(s.x, s.y, s.z);
       }
     }
-  }
-  
-  public JPanel getControlPanel() {
-    JPanel p = new JPanel();
-    p.setLayout(new BoxLayout(p, BoxLayout.PAGE_AXIS));
-    
-    JSlider starSpeedSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 1);
-    starSpeedSlider.addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent e) {
-        JSlider source = (JSlider) e.getSource();
-        rotationSpeed = (float) (source.getValue() / 100.0 * (Math.PI / 10));
-      }
-    });
-    p.add(starSpeedSlider);
-    
-    return p;
   }
 }
 

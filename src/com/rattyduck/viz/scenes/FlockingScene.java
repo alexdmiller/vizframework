@@ -15,8 +15,6 @@ import com.rattyduck.viz.models.Boids.Boid;
 import com.rattyduck.viz.models.Box;
 import com.rattyduck.viz.renderers.BoidRenderer;
 import com.rattyduck.viz.renderers.ButterflyBoidRenderer;
-import com.rattyduck.viz.renderers.SimpleBoidRenderer;
-import com.rattyduck.viz.renderers.WormBoidRenderer;
 
 import ddf.minim.AudioSource;
 import ddf.minim.analysis.BeatDetect;
@@ -24,19 +22,14 @@ import processing.core.PGraphics;
 import processing.core.PVector;
 
 public class FlockingScene extends Scene {
-  private Boids boids;
-  private List<BoidRenderer> renderers;
-  private BeatDetect beat;
-  private static final int NUM_BOIDS = 300;
+  private int numBoids = 600;
+  
+  private transient Boids boids;
+  private transient List<BoidRenderer> renderers;
+  private transient BeatDetect beat;
   
   public FlockingScene(int width, int height, PGraphics g) {
     super(width, height, g, "Bugs");
-    
-    Box bounds = new Box(new PVector(0, 0, -500), width, height, 1000);
-    boids = new Boids(bounds);
-    
-    renderers = new ArrayList<>();
-    
     beat = new BeatDetect();
     beat.setSensitivity(300);
   }
@@ -44,8 +37,12 @@ public class FlockingScene extends Scene {
   public void start() {
     super.start();
     g.camera();
+
+    Box bounds = new Box(new PVector(0, 0, -500), width, height, 1000);
+    boids = new Boids(bounds);
+    renderers = new ArrayList<>();
     
-    for (int i = 0; i < NUM_BOIDS; i++) {
+    for (int i = 0; i < numBoids; i++) {
       Boid b = boids.createRandomBoid();
       renderers.add(new ButterflyBoidRenderer(b));
     }
@@ -53,6 +50,7 @@ public class FlockingScene extends Scene {
   
   public void kill() {
     super.kill();
+    boids = null;
   }
   
   public void render(int deltaMillis, AudioSource audio) {

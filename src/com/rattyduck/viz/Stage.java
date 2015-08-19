@@ -1,28 +1,22 @@
 package com.rattyduck.viz;
 
-import java.util.Map;
-
-import ddf.minim.AudioSource;
-import processing.core.PApplet;
-import processing.core.PGraphics;
-
-import java.util.HashMap;
-import java.util.List;
-import java.awt.Panel;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Observable;
 
+import ddf.minim.AudioSource;
+import processing.core.PGraphics;
+
 public class Stage extends Observable {
-  private Scene currentScene;
-  private int currentSceneIndex;
+  private transient Scene currentScene;
+  private transient int currentSceneIndex;
+  private transient List<Scene> activeScenes;
+  private transient AudioSource audio;
+  private transient PGraphics g;
+  private transient long lastMillis;
   
-  private List<Scene> activeScenes;
-  private List<Scene> scenes;
-  
-  private AudioSource audio;
-  private PGraphics g;
-  private long lastMillis;
+  private List<Scene> scenes;  
   
   Stage(AudioSource audio, PGraphics g) {
     this.scenes = new ArrayList<Scene>();

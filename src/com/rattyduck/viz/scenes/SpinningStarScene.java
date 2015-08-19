@@ -16,11 +16,12 @@ import ddf.minim.analysis.BeatDetect;
 import processing.core.PGraphics;
 
 public class SpinningStarScene extends Scene {
-  private ArrayList<Sphere> spheres;
-  private float cameraAngle;
-  final float SPHERE_SIZE = 200;
-  private float rotationSpeed = 0.01f;
-  private BeatDetect beat;
+  public float sphereSize = 200;
+  public float rotationSpeed = 0.01f;
+  
+  private transient ArrayList<Sphere> spheres;
+  private transient float cameraAngle;
+  private transient BeatDetect beat;
 
   public SpinningStarScene(int width, int height, PGraphics g) {
     super(width, height, g, "Spinning Stars");
@@ -47,13 +48,13 @@ public class SpinningStarScene extends Scene {
   
   void createSpheres(int c, int num, int rangeStart, int rangeEnd, int rangeNum) {
     for (int i = 0; i < num; i++) {
-      float radius = (float) (Math.random() * SPHERE_SIZE);
+      float radius = (float) (Math.random() * sphereSize);
       float angle = (float) (Math.random() * Math.PI * 2);
       float t = (float) (Math.random() * Math.PI * 2);
       float posX = (float) (Math.cos(angle) * Math.sin(t) * radius);
       float posY = (float) (Math.sin(angle) * Math.sin(t) * radius);
       float posZ = (float) (Math.cos(t) * radius);
-      float threshold = radius / SPHERE_SIZE;
+      float threshold = radius / sphereSize;
       
       spheres.add(new Sphere(posX, posY, posZ, c, threshold, rangeStart, rangeEnd, rangeNum));
     }

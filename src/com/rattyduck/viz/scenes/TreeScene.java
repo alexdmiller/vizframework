@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.rattyduck.viz.Scene;
-import com.rattyduck.viz.models.Sphere;
 
 import ddf.minim.AudioSource;
 import ddf.minim.analysis.BeatDetect;

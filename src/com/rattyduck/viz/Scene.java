@@ -6,8 +6,9 @@ import ddf.minim.AudioSource;
 import processing.core.PGraphics;
 
 public abstract class Scene implements Controllable {
-  private boolean isFinished;
-  protected PGraphics g; 
+  private transient boolean isFinished;
+  protected transient PGraphics g;
+  
   protected int width;
   protected int height;
   protected String name;

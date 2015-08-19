@@ -9,10 +9,10 @@ import java.util.Map;
 import processing.core.PVector;
 
 public class Lattice {
-  private List<Node> nodes;
-  private Map<Edge, EdgeInfo> edges;
-  private int width, height; 
+  private transient List<Node> nodes;
+  private transient Map<Edge, EdgeInfo> edges;
   
+  private int width, height; 
   public float fadeSpeed = 2;
   public float minBrightness = 100;
   public float brightnessNode = 255;

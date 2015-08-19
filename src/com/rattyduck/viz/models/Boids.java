@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.common.collect.EvictingQueue;
 import com.rattyduck.viz.models.Boids.Boid;
 
 import processing.core.PVector;
@@ -13,15 +12,15 @@ public class Boids implements Iterable<Boid> {
   public float maxSpeed = 5;
   public float maxSteerForce = 0.1f;
   public float neighborhoodRadius = 100;
-  
   public float separationWeight = 10;
   public float cohesionWeight = 1;
   public float alignmentWeight = 3;
   public float avoidWeight = 20;
-  
-  private List<Boid> boids;
+
   private Box bounds;
   
+  private transient List<Boid> boids;
+
   public Boids(Box bounds) {
     this.boids = new ArrayList<>();
     this.bounds = bounds;

@@ -2,20 +2,14 @@ package com.rattyduck.viz.scenes;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import com.rattyduck.viz.Scene;
 import com.rattyduck.viz.models.Lattice;
 import com.rattyduck.viz.models.Lattice.Node;
-import com.rattyduck.viz.models.Sphere;
 
 import ddf.minim.AudioSource;
 import ddf.minim.analysis.BeatDetect;
@@ -24,7 +18,8 @@ import processing.core.PVector;
 
 public class LatticeScene extends Scene {
   private Lattice lattice;
-  private BeatDetect beat;
+  
+  private transient BeatDetect beat;
   
   public LatticeScene(int width, int height, PGraphics g) {
     super(width, height, g, "Lattice");
