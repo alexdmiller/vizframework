@@ -16,8 +16,8 @@ public class HyperSpaceScene extends Scene {
   private transient ArrayList<Sphere> spheres;
   private transient BeatDetect beat;
 
-  public HyperSpaceScene(int width, int height, PGraphics g) {
-    super(width, height, g, "Hyperspace");
+  public HyperSpaceScene(int width, int height) {
+    super(width, height);
     spheres = new ArrayList<Sphere>();
     beat = new BeatDetect();
     beat.detectMode(BeatDetect.FREQ_ENERGY);
@@ -26,7 +26,6 @@ public class HyperSpaceScene extends Scene {
   
   public void start() {
     super.start();    
-    g.camera(0, 0, 0, 0, 0, 100, 0, -1, 0);
   }
   
   public void kill() {
@@ -34,7 +33,7 @@ public class HyperSpaceScene extends Scene {
     spheres.clear();
   }
   
-  public void render(int deltaMillis, AudioSource audio) {
+  public void render(int deltaMillis, AudioSource audio, PGraphics g) {
     g.camera(0, 0, 0, 0, 0, 100, 0, -1, 0);
     g.background(0);
     beat.detect(audio.mix);

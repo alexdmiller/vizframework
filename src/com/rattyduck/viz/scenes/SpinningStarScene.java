@@ -23,8 +23,8 @@ public class SpinningStarScene extends Scene {
   private transient float cameraAngle;
   private transient BeatDetect beat;
 
-  public SpinningStarScene(int width, int height, PGraphics g) {
-    super(width, height, g, "Spinning Stars");
+  public SpinningStarScene(int width, int height) {
+    super(width, height);
     spheres = new ArrayList<Sphere>();
     beat = new BeatDetect();
     beat.detectMode(BeatDetect.FREQ_ENERGY);
@@ -37,8 +37,6 @@ public class SpinningStarScene extends Scene {
     createSpheres(0xfff8e7f8, 1000, 0, 6, 3);
     createSpheres(0xfffff394, 1000, 7, 20, 5);
     createSpheres(0xffffc994, 1000, 20, 25, 2);
-    
-    g.camera(0, 0, 0, 0, 0, 100, 0, -1, 0);
   }
   
   public void kill() {
@@ -46,7 +44,7 @@ public class SpinningStarScene extends Scene {
     spheres.clear();
   }
   
-  void createSpheres(int c, int num, int rangeStart, int rangeEnd, int rangeNum) {
+  private void createSpheres(int c, int num, int rangeStart, int rangeEnd, int rangeNum) {
     for (int i = 0; i < num; i++) {
       float radius = (float) (Math.random() * sphereSize);
       float angle = (float) (Math.random() * Math.PI * 2);
@@ -60,7 +58,7 @@ public class SpinningStarScene extends Scene {
     }
   }
   
-  public void render(int deltaMillis, AudioSource audio) {
+  public void render(int deltaMillis, AudioSource audio, PGraphics g) {
     g.camera((float) Math.cos(cameraAngle) * 100, 0, (float) Math.sin(cameraAngle) * 100,
       0, 0, 0,
       0, -1, 0);

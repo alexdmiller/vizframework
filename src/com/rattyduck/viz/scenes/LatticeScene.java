@@ -22,16 +22,14 @@ public class LatticeScene extends Scene {
   private transient BeatDetect beat;
   
   public LatticeScene(int width, int height, PGraphics g) {
-    super(width, height, g, "Lattice");
+    super(width, height);
     
     beat = new BeatDetect();
     beat.setSensitivity(300);
   }
   
   public void start() {
-    
     super.start();
-    g.camera();
     
     lattice = new Lattice(width, height);
     
@@ -48,7 +46,7 @@ public class LatticeScene extends Scene {
     lattice = null;
   }
   
-  public void render(int deltaMillis, AudioSource audio) {
+  public void render(int deltaMillis, AudioSource audio, PGraphics g) {
     beat.detect(audio.mix);
     if (beat.isOnset()){
       lattice.signalNodes(audio.mix.level() / 4);

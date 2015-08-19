@@ -7,21 +7,18 @@ import processing.core.PGraphics;
 
 public abstract class Scene implements Controllable {
   private transient boolean isFinished;
-  protected transient PGraphics g;
   
   protected int width;
   protected int height;
   protected String name;
   
-  public Scene(int width, int height, PGraphics g, String name) {
-    this.g = g;
+  public Scene(int width, int height) {
     this.width = width;
     this.height = height;
-    this.name = name;
   }
   
   public void start() {
-    isFinished = false;
+    this.isFinished = false;
   }
   
   public void kill() {
@@ -40,5 +37,5 @@ public abstract class Scene implements Controllable {
     return new JPanel();
   }
 
-  public abstract void render(int deltaMillis, AudioSource audio);
+  public abstract void render(int deltaMillis, AudioSource audio, PGraphics g);
 }

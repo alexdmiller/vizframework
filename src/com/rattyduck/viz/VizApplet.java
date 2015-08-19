@@ -3,6 +3,10 @@ package com.rattyduck.viz;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -10,6 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.cedarsoftware.util.io.JsonReader;
+import com.cedarsoftware.util.io.JsonWriter;
 import com.rattyduck.viz.scenes.FlockingScene;
 import com.rattyduck.viz.scenes.HyperSpaceScene;
 import com.rattyduck.viz.scenes.LatticeScene;
@@ -33,27 +39,32 @@ public class VizApplet extends PApplet implements Controllable, Observer {
   }
   
   public void setup() {
+    System.out.println(System.getProperty("user.dir"));
     size(this.width, this.height, P3D);
     smooth();
     
     Minim minim = new Minim(this);
-    audio = minim.loadFile("reverie.mp3");
-    stage = new Stage(audio, g);
+    audio = minim.loadFile("dirty ass rap beat.mp3");
     
-    getStage().addScene(new FlockingScene(this.width, this.height, g));
-    getStage().addScene(new LatticeScene(this.width, this.height, g));
-    getStage().addScene(new HyperSpaceScene(this.width, this.height, g));
-    getStage().addScene(new SpinningStarScene(this.width, this.height, g));
-    getStage().addScene(new SetupScene(this.width, this.height, g));
-    
-    getStage().goToScene(0);
+    File file = new File("stage.json");
+    try {
+      FileInputStream in = new FileInputStream(file);
+      JsonReader reader = new JsonReader(in);
+      stage = (Stage) reader.readObject();
+      in.close();
+    } catch (IOException e) {
+      System.out.println(e);
+    }
+
+    stage.init(audio, g);
+    stage.goToScene(0);
     audio.play();
 
     setupListener.actionPerformed(null);
   }
 
   public void draw() {
-    getStage().update();
+    stage.update();
   }
 
   public Stage getStage() {

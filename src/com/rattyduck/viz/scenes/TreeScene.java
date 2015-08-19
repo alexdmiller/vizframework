@@ -26,7 +26,7 @@ public class TreeScene extends Scene {
   List<PVector> attractors;
   
   public TreeScene(int width, int height, PGraphics g) {
-    super(width, height, g, "Tree");
+    super(width, height);
     
     attractors = new ArrayList<PVector>();
     tree = new Tree();
@@ -44,8 +44,6 @@ public class TreeScene extends Scene {
     }
     
     tree.nodes.add(new PVector(width / 2, height / 2));
-    
-    g.camera();
   }
   
   public void kill() {
@@ -53,7 +51,7 @@ public class TreeScene extends Scene {
   }
   
   @Override
-  public void render(int deltaMillis, AudioSource audio) {
+  public void render(int deltaMillis, AudioSource audio, PGraphics g) {
     beat.detect(audio.mix);
     if (beat.isOnset()) {
       flowerRadius += 2;
@@ -167,7 +165,7 @@ public class TreeScene extends Scene {
       this.radius = 0;
     }
     
-    void updateAndDraw() {
+    void updateAndDraw(PGraphics g) {
       if (radius < 4) {
         radius += 0.1;
       }

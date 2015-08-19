@@ -18,9 +18,12 @@ public class Stage extends Observable {
   
   private List<Scene> scenes;  
   
-  Stage(AudioSource audio, PGraphics g) {
+  public Stage() {
     this.scenes = new ArrayList<Scene>();
     this.activeScenes = new ArrayList<Scene>();
+  }
+  
+  public void init(AudioSource audio, PGraphics g) {
     this.audio = audio;
     this.g = g;
   }
@@ -65,7 +68,7 @@ public class Stage extends Observable {
       if (s.isFinished()) {
         i.remove();
       } else {
-        s.render((int) delta, audio);
+        s.render((int) delta, audio, g);
       }
     }
     lastMillis = millis;

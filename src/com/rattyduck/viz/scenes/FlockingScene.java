@@ -28,15 +28,14 @@ public class FlockingScene extends Scene {
   private transient List<BoidRenderer> renderers;
   private transient BeatDetect beat;
   
-  public FlockingScene(int width, int height, PGraphics g) {
-    super(width, height, g, "Bugs");
+  public FlockingScene(int width, int height) {
+    super(width, height);
     beat = new BeatDetect();
     beat.setSensitivity(300);
   }
   
   public void start() {
     super.start();
-    g.camera();
 
     Box bounds = new Box(new PVector(0, 0, -500), width, height, 1000);
     boids = new Boids(bounds);
@@ -53,7 +52,7 @@ public class FlockingScene extends Scene {
     boids = null;
   }
   
-  public void render(int deltaMillis, AudioSource audio) {
+  public void render(int deltaMillis, AudioSource audio, PGraphics g) {
     boids.update(deltaMillis);
     beat.detect(audio.mix);
     for (BoidRenderer br : renderers) {

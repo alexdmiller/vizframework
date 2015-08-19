@@ -9,8 +9,8 @@ import processing.core.PGraphics;
 public class SetupScene extends Scene {
   private transient BeatDetect beat;
 
-  public SetupScene(int width, int height, PGraphics g) {
-    super(width, height, g, "Setup");
+  public SetupScene(int width, int height) {
+    super(width, height);
     beat = new BeatDetect();
     beat.detectMode(BeatDetect.FREQ_ENERGY);
     beat.setSensitivity(300);
@@ -19,11 +19,10 @@ public class SetupScene extends Scene {
   @Override
   public void start() {
     super.start();
-    g.camera();
   }
   
   @Override
-  public void render(int deltaMillis, AudioSource audio) {
+  public void render(int deltaMillis, AudioSource audio, PGraphics g) {
     g.stroke(255);
     g.strokeWeight(2);
     g.noFill();
