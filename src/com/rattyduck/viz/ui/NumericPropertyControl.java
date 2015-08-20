@@ -1,10 +1,7 @@
 package com.rattyduck.viz.ui;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -31,8 +28,8 @@ public class NumericPropertyControl extends JPanel implements ScenePropertyChang
 
     valueLabel = new JLabel(Float.toString(property.get()));
     this.add(valueLabel, BorderLayout.EAST);
-    
-    slider = new JSlider(JSlider.HORIZONTAL, 0, MAX_SLIDER, propertyToSlider(property));
+        
+    slider = new JSlider(JSlider.HORIZONTAL, 0, MAX_SLIDER, 6);
     slider.addChangeListener(new ChangeListener() {
       @Override
       public void stateChanged(ChangeEvent e) {
@@ -45,13 +42,11 @@ public class NumericPropertyControl extends JPanel implements ScenePropertyChang
   }
   
   private float sliderValueToProperty(int sliderValue, NumericSceneProperty property) {
-    return (property.getMax() - property.getMin()) / MAX_SLIDER *
-        sliderValue + property.getMin();
+    return (float) sliderValue / MAX_SLIDER * (property.getMax() - property.getMin()) + property.getMin();
   }
   
   private int propertyToSlider(NumericSceneProperty property) {
-    return (int) (Math.round(property.getMax() - property.getMin()) / MAX_SLIDER *
-        (property.get() - property.getMin()));
+    return (int) Math.round(property.get() / (property.getMax() - property.getMin()) * MAX_SLIDER);
   }
 
   @Override
