@@ -4,17 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.rattyduck.viz.SceneChangeListener;
 import com.rattyduck.viz.Stage;
 
-public class StageControlPanel extends JPanel implements Observer {
+public class StageControlPanel extends JPanel implements SceneChangeListener {
   private Stage stage;
   private JLabel sceneLabel;
   private JPanel sceneControl;
@@ -23,7 +22,8 @@ public class StageControlPanel extends JPanel implements Observer {
   public StageControlPanel(Stage stage, JFrame frame) {
     this.stage = stage;
     this.frame = frame;
-    stage.addObserver(this);
+    
+    stage.addSceneChangeListener(this);
     
     setSize(new Dimension(100, 100));
     setLayout(new BorderLayout());
@@ -37,7 +37,7 @@ public class StageControlPanel extends JPanel implements Observer {
     });
     add(prev, BorderLayout.WEST);
     
-    sceneLabel = new JLabel(stage.getCurrentScene().getName());
+    sceneLabel = new JLabel();
     sceneLabel.setPreferredSize(new Dimension(200, 15));
     add(sceneLabel, BorderLayout.CENTER);
     
@@ -49,13 +49,11 @@ public class StageControlPanel extends JPanel implements Observer {
       }
     });
     add(next, BorderLayout.EAST);
-    
-    update(null, null);
   }
   
   @Override
-  public void update(Observable o, Object arg) {
-    sceneLabel.setText(stage.getCurrentScene().getName());    
+  public void sceneChanged() {
+    sceneLabel.setText(stage.getCurrentScene().getName());
     if (sceneControl != null) {
       remove(sceneControl);
     }
@@ -64,5 +62,4 @@ public class StageControlPanel extends JPanel implements Observer {
     repaint();
     frame.pack();
   }
-
 }

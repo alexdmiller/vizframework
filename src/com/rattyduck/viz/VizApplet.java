@@ -6,10 +6,14 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -27,7 +31,9 @@ import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
 import processing.core.PApplet;
 
-public class VizApplet extends PApplet implements Controllable, Observer {
+public class VizApplet extends PApplet implements Controllable {
+  private static final String STAGE_FILENAME = "stage.json";
+
   private Stage stage;
   private JFrame frame;
   private AudioPlayer audio;
@@ -39,25 +45,25 @@ public class VizApplet extends PApplet implements Controllable, Observer {
   }
   
   public void setup() {
-    System.out.println(System.getProperty("user.dir"));
     size(this.width, this.height, P3D);
     smooth();
     
     Minim minim = new Minim(this);
     audio = minim.loadFile("dirty ass rap beat.mp3");
     
-    File file = new File("stage.json");
+    File file = new File(STAGE_FILENAME);
     try {
       FileInputStream in = new FileInputStream(file);
       JsonReader reader = new JsonReader(in);
       stage = (Stage) reader.readObject();
-      in.close();
+      reader.close();
     } catch (IOException e) {
-      System.out.println(e);
+      stage = new Stage();
+      stage.addScene(new SetupScene(width, height));
     }
 
     stage.init(audio, g);
-    stage.goToScene(0);
+    stage.gotoScene(0);
     audio.play();
 
     setupListener.actionPerformed(null);
@@ -71,10 +77,26 @@ public class VizApplet extends PApplet implements Controllable, Observer {
     return stage;
   }
   
+  public void saveStage() {
+    File file = new File(STAGE_FILENAME);
+    try {
+      FileOutputStream out = new FileOutputStream(file);
+      
+      Map<String, Object> m = new HashMap<>();
+      m.put(JsonWriter.PRETTY_PRINT, true);
+      
+      JsonWriter writer = new JsonWriter(out, m);
+      writer.write(stage);
+      writer.close();
+    } catch (IOException e) {
+      System.out.println(e);
+    }
+  }
+  
   @Override
   public JPanel getControlPanel() {
     JPanel p = new JPanel();
-    p.setLayout(new BorderLayout());
+    p.setLayout(new BoxLayout(p, BoxLayout.PAGE_AXIS));
     
     JButton playMusic = new JButton("Play Music");
     playMusic.addActionListener(new ActionListener() {
@@ -83,16 +105,20 @@ public class VizApplet extends PApplet implements Controllable, Observer {
         audio.play();
       }
     });
-    p.add(playMusic, BorderLayout.NORTH);
+    p.add(playMusic);
+    
+    JButton saveStage = new JButton("Save");
+    saveStage.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        saveStage();
+      }
+    });
+    p.add(saveStage);
     
     StageControlPanel stagePanel = new StageControlPanel(stage, frame);
-    p.add(stagePanel, BorderLayout.SOUTH);
+    p.add(stagePanel);
     
     return p;
-  }
-
-  @Override
-  public void update(Observable o, Object arg) {
-    
   }
 }

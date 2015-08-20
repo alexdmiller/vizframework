@@ -9,6 +9,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.rattyduck.viz.Scene;
+import com.rattyduck.viz.SceneProperty.NumericSceneProperty;
 import com.rattyduck.viz.models.Sphere;
 
 import ddf.minim.AudioSource;
@@ -17,7 +18,9 @@ import processing.core.PGraphics;
 
 public class SpinningStarScene extends Scene {
   public float sphereSize = 200;
-  public float rotationSpeed = 0.01f;
+
+  public NumericSceneProperty rotationSpeed =
+      new NumericSceneProperty(0.1f, 0f, 1f);
   
   private transient ArrayList<Sphere> spheres;
   private transient float cameraAngle;
@@ -62,7 +65,7 @@ public class SpinningStarScene extends Scene {
     g.camera((float) Math.cos(cameraAngle) * 100, 0, (float) Math.sin(cameraAngle) * 100,
       0, 0, 0,
       0, -1, 0);
-    cameraAngle += rotationSpeed;
+    cameraAngle += rotationSpeed.getValue();
     g.background(0);
     beat.detect(audio.mix);
     
@@ -83,7 +86,7 @@ public class SpinningStarScene extends Scene {
       @Override
       public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider) e.getSource();
-        rotationSpeed = (float) (source.getValue() / 100.0 * (Math.PI / 10));
+        //rotationSpeed = (float) (source.getValue() / 100.0 * (Math.PI / 10));
       }
     });
     p.add(starSpeedSlider);

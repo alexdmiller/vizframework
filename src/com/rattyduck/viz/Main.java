@@ -70,8 +70,8 @@ public class Main extends JFrame {
       
       Dimension canvasSize;
       if (fullScreen) {
-        GraphicsDevice gd =
-            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        GraphicsDevice gd = GraphicsEnvironment
+            .getLocalGraphicsEnvironment().getDefaultScreenDevice();
         gd.setFullScreenWindow(this);
         canvasSize = Toolkit.getDefaultToolkit().getScreenSize();
       } else {

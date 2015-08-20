@@ -1,26 +1,25 @@
 package com.rattyduck.viz;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Observable;
 
 import ddf.minim.AudioSource;
 import processing.core.PGraphics;
 
-public class Stage extends Observable {
+public class Stage {
   private transient Scene currentScene;
+  private transient int nextSceneIndex;
   private transient int currentSceneIndex;
-  private transient List<Scene> activeScenes;
   private transient AudioSource audio;
   private transient PGraphics g;
   private transient long lastMillis;
-  
+  private transient List<SceneChangeListener> sceneChangeListeners;
+
   private List<Scene> scenes;  
   
   public Stage() {
     this.scenes = new ArrayList<Scene>();
-    this.activeScenes = new ArrayList<Scene>();
+    this.sceneChangeListeners = new ArrayList<>();
   }
   
   public void init(AudioSource audio, PGraphics g) {
@@ -32,18 +31,16 @@ public class Stage extends Observable {
     scenes.add(scene);      
   }
   
-  public void goToScene(int index) {
+  public void addSceneChangeListener(SceneChangeListener listener) {
+    sceneChangeListeners.add(listener);
+  }
+  
+  public void gotoScene(int index) {
     if (index < 0 || index >= scenes.size()) return;
     if (currentScene != null) {
       currentScene.kill();
     }
-    currentScene = scenes.get(index);
-    currentSceneIndex = index;
-    activeScenes.add(currentScene);
-    currentScene.start();
-    
-    setChanged();
-    notifyObservers();
+    nextSceneIndex = index;
   }
   
   public Scene getCurrentScene() {
@@ -51,26 +48,32 @@ public class Stage extends Observable {
   }
   
   public void nextScene() {
-    goToScene(currentSceneIndex + 1);
+    gotoScene(currentSceneIndex + 1);
   }
   
   public void prevScene() {
-    goToScene(currentSceneIndex - 1);
+    gotoScene(currentSceneIndex - 1);
   }
   
   public void update() {
     g.background(0);
     long millis = System.currentTimeMillis();
     long delta = millis - lastMillis;
-    Iterator<Scene> i = activeScenes.iterator();
-    while(i.hasNext()) {
-      Scene s = i.next();
-      if (s.isFinished()) {
-        i.remove();
-      } else {
-        s.render((int) delta, audio, g);
+    if (currentScene == null || currentScene.isFinished()) {
+      if (nextSceneIndex == -1) {
+        throw new Error("A new scene is not scheduled to run next.");
+      }
+      currentScene = scenes.get(nextSceneIndex);
+      currentSceneIndex = nextSceneIndex;
+      nextSceneIndex = -1;
+      g.camera();
+      currentScene.start();
+      
+      for (SceneChangeListener l : sceneChangeListeners) {
+        l.sceneChanged();
       }
     }
+    currentScene.render((int) delta, audio, g);
     lastMillis = millis;
   }
 }
