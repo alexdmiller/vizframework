@@ -4,20 +4,27 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.rattyduck.viz.ControllableProperty;
+import com.rattyduck.viz.SceneProperty;
+import com.rattyduck.viz.SceneProperty.NumericSceneProperty;
 import com.rattyduck.viz.models.Boids.Boid;
 
 import processing.core.PVector;
 
 public class Boids implements Iterable<Boid> {
-  public float maxSpeed = 5;
+  @ControllableProperty
+  public NumericSceneProperty maxSpeed = SceneProperty.numeric("Max speed", 4, 0, 10);
+
   public float maxSteerForce = 0.1f;
   public float neighborhoodRadius = 100;
   public float separationWeight = 10;
-  public float cohesionWeight = 1;
+  
+  @ControllableProperty
+  public NumericSceneProperty cohesionWeight = SceneProperty.numeric("Cohesion", 1, 0, 20);
+
   public float alignmentWeight = 3;
   public float avoidWeight = 20;
-
-  private Box bounds;
+  public Box bounds;
   
   private transient List<Boid> boids;
 
@@ -54,10 +61,10 @@ public class Boids implements Iterable<Boid> {
     
     public void update(int millis) {
       acc.add(PVector.mult(alignment(), alignmentWeight));
-      acc.add(PVector.mult(cohesion(), cohesionWeight));
+      acc.add(PVector.mult(cohesion(), cohesionWeight.get()));
       acc.add(PVector.mult(separation(), separationWeight));
       vel.add(acc);
-      vel.limit(maxSpeed);
+      vel.limit(maxSpeed.get());
       pos.add(vel);
       acc.mult(0);
     }

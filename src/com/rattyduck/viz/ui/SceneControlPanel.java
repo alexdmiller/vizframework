@@ -6,6 +6,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.rattyduck.viz.ControllableProperty;
 import com.rattyduck.viz.Scene;
 import com.rattyduck.viz.SceneProperty.NumericSceneProperty;
 
@@ -15,17 +16,25 @@ public class SceneControlPanel extends JPanel {
 
     JLabel nameLabel = new JLabel(scene.getName());
     add(nameLabel);
-    
-    for (Field field : scene.getClass().getDeclaredFields()) {
-      if (field.getType() == NumericSceneProperty.class) {
-        try {
-          NumericPropertyControl c = new NumericPropertyControl((NumericSceneProperty) field.get(scene));
-          add(c);
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+
+    addControlsForObject(scene);
+  }
+  
+  private void addControlsForObject(Object o) {
+    for (Field field : o.getClass().getDeclaredFields()) {
+      try {
+        if (field.getAnnotation(ControllableProperty.class) != null) {
+          if (field.getType() == NumericSceneProperty.class) {
+            NumericPropertyControl c = new NumericPropertyControl((NumericSceneProperty) field.get(o));
+            add(c);         
+          } else {
+            addControlsForObject(field.get(o));
+          }
         }
-      }
+      } catch (IllegalArgumentException | IllegalAccessException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      } 
     }
   }
 }

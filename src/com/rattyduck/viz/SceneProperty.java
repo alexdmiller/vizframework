@@ -15,6 +15,11 @@ public class SceneProperty<T> {
     p.min = min;
     return p;
   }
+  
+  public static NumericSceneProperty numeric(
+      String name, int defaultValue, int min, int max) {
+    return numeric(name, (float) defaultValue, (float) min, (float) max);
+  }
 
   public static StringSceneProperty string(String name, String defaultValue) {
     StringSceneProperty p = new StringSceneProperty();

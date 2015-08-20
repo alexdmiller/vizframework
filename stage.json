@@ -36,7 +36,13 @@
         "width":1920,
         "height":1035,
         "name":"Stars"
-      }
+      },
+      {
+        "@type":"com.rattyduck.viz.scenes.FlockingScene",
+        "width":1920,
+        "height":1035,
+        "name":"Birds"
+      },
     ]
   }
 }

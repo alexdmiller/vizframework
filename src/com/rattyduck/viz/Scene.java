@@ -32,10 +32,6 @@ public abstract class Scene {
   public String getName() {
     return name;
   }
-  
-  public JPanel getControlPanel() {
-    return new JPanel();
-  }
 
   public abstract void render(int deltaMillis, AudioSource audio, PGraphics g);
 }

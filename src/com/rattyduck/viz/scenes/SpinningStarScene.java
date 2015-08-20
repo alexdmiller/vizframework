@@ -8,6 +8,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.rattyduck.viz.ControllableProperty;
 import com.rattyduck.viz.Scene;
 import com.rattyduck.viz.SceneProperty;
 import com.rattyduck.viz.SceneProperty.NumericSceneProperty;
@@ -18,10 +19,10 @@ import ddf.minim.analysis.BeatDetect;
 import processing.core.PGraphics;
 
 public class SpinningStarScene extends Scene {
-  public NumericSceneProperty sphereSize =
-      SceneProperty.numeric("Sphere size", 200f, 20f, 300f);
-  public NumericSceneProperty rotationSpeed =
-      SceneProperty.numeric("Rotation speed", 0.1f, -0.2f, 0.2f);
+  @ControllableProperty
+  public NumericSceneProperty sphereSize = SceneProperty.numeric("Sphere size", 200f, 20f, 300f);
+  @ControllableProperty
+  public NumericSceneProperty rotationSpeed = SceneProperty.numeric("Rotation speed", 0.1f, -0.2f, 0.2f);
   
   private transient ArrayList<Sphere> spheres;
   private transient float cameraAngle;
