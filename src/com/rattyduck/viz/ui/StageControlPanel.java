@@ -15,8 +15,7 @@ import com.rattyduck.viz.Stage;
 
 public class StageControlPanel extends JPanel implements SceneChangeListener {
   private Stage stage;
-  private JLabel sceneLabel;
-  private JPanel sceneControl;
+  private SceneControlPanel sceneControl;
   private JFrame frame;
   
   public StageControlPanel(Stage stage, JFrame frame) {
@@ -36,11 +35,7 @@ public class StageControlPanel extends JPanel implements SceneChangeListener {
       }
     });
     add(prev, BorderLayout.WEST);
-    
-    sceneLabel = new JLabel();
-    sceneLabel.setPreferredSize(new Dimension(200, 15));
-    add(sceneLabel, BorderLayout.CENTER);
-    
+        
     JButton next = new JButton("Next");
     next.addActionListener(new ActionListener() {
       @Override
@@ -53,11 +48,10 @@ public class StageControlPanel extends JPanel implements SceneChangeListener {
   
   @Override
   public void sceneChanged() {
-    sceneLabel.setText(stage.getCurrentScene().getName());
     if (sceneControl != null) {
       remove(sceneControl);
     }
-    sceneControl = stage.getCurrentScene().getControlPanel();
+    sceneControl = new SceneControlPanel(stage.getCurrentScene());
     add(sceneControl, BorderLayout.SOUTH);
     repaint();
     frame.pack();

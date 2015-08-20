@@ -13,15 +13,6 @@
       {
         "@id":845,
         "@type":"com.rattyduck.viz.scenes.SpinningStarScene",
-        "sphereSize":300.0,
-        "rotationSpeed":{
-          "min":0.0,
-          "max":1.0,
-          "value":{
-            "@type":"float",
-            "value":0.01
-          }
-        },
         "width":1920,
         "height":1035,
         "name":"Stars"

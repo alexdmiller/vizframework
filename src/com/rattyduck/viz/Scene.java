@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 import ddf.minim.AudioSource;
 import processing.core.PGraphics;
 
-public abstract class Scene implements Controllable {
+public abstract class Scene {
   private transient boolean isFinished;
   
   protected int width;
