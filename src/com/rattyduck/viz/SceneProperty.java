@@ -1,31 +1,58 @@
 package com.rattyduck.viz;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SceneProperty<T> {
-  private T value;
+  private List<ScenePropertyChangeListener> listeners;
   
-  public SceneProperty() { }
-  
-  public SceneProperty(T value) {
-    this.value = value;
+  public static NumericSceneProperty numeric(
+      String name, float defaultValue, float min, float max) {
+    NumericSceneProperty p = new NumericSceneProperty();
+    p.name = name;
+    p.value = defaultValue;
+    p.max = max;
+    p.min = min;
+    return p;
+  }
+
+  public static StringSceneProperty string(String name, String defaultValue) {
+    StringSceneProperty p = new StringSceneProperty();
+    p.name = name;
+    p.value = defaultValue;
+    return p;
   }
   
-  public T getValue() {
+
+  protected String name;
+  protected T value;
+
+  public SceneProperty() {
+    listeners = new ArrayList<>();
+  }
+    
+  public T get() {
     return value;
   }
   
-  public void setValue(T value) {
+  public void set(T value) {
     this.value = value;
+    for (ScenePropertyChangeListener l : listeners) {
+      l.scenePropertyChanged(this);
+    }
+  }
+  
+  public String getName() {
+    return name;
+  }
+  
+  public void addChangeListener(ScenePropertyChangeListener l) {
+    listeners.add(l);
   }
   
   public static class NumericSceneProperty extends SceneProperty<Float> {
     private float min;
     private float max;
-    
-    public NumericSceneProperty(float value, float min, float max) {
-      super(value);
-      this.min = min;
-      this.max = max;
-    }
     
     public float getMin() {
       return min;
@@ -37,6 +64,5 @@ public class SceneProperty<T> {
   }
   
   public static class StringSceneProperty extends SceneProperty<String> {
-    
   }
 }

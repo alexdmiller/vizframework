@@ -9,6 +9,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.rattyduck.viz.Scene;
+import com.rattyduck.viz.SceneProperty;
 import com.rattyduck.viz.SceneProperty.NumericSceneProperty;
 import com.rattyduck.viz.models.Sphere;
 
@@ -17,10 +18,10 @@ import ddf.minim.analysis.BeatDetect;
 import processing.core.PGraphics;
 
 public class SpinningStarScene extends Scene {
-  public float sphereSize = 200;
-
+  public NumericSceneProperty sphereSize =
+      SceneProperty.numeric("Sphere size", 200f, 20f, 300f);
   public NumericSceneProperty rotationSpeed =
-      new NumericSceneProperty(0.1f, 0f, 1f);
+      SceneProperty.numeric("Rotation speed", 0.1f, 0f, 1f);
   
   private transient ArrayList<Sphere> spheres;
   private transient float cameraAngle;
@@ -49,13 +50,13 @@ public class SpinningStarScene extends Scene {
   
   private void createSpheres(int c, int num, int rangeStart, int rangeEnd, int rangeNum) {
     for (int i = 0; i < num; i++) {
-      float radius = (float) (Math.random() * sphereSize);
+      float radius = (float) (Math.random() * sphereSize.get());
       float angle = (float) (Math.random() * Math.PI * 2);
       float t = (float) (Math.random() * Math.PI * 2);
       float posX = (float) (Math.cos(angle) * Math.sin(t) * radius);
       float posY = (float) (Math.sin(angle) * Math.sin(t) * radius);
       float posZ = (float) (Math.cos(t) * radius);
-      float threshold = radius / sphereSize;
+      float threshold = radius / sphereSize.get();
       
       spheres.add(new Sphere(posX, posY, posZ, c, threshold, rangeStart, rangeEnd, rangeNum));
     }
@@ -65,7 +66,7 @@ public class SpinningStarScene extends Scene {
     g.camera((float) Math.cos(cameraAngle) * 100, 0, (float) Math.sin(cameraAngle) * 100,
       0, 0, 0,
       0, -1, 0);
-    cameraAngle += rotationSpeed.getValue();
+    cameraAngle += rotationSpeed.get();
     g.background(0);
     beat.detect(audio.mix);
     
