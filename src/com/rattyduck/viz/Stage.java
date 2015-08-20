@@ -47,6 +47,10 @@ public class Stage {
     return currentScene;
   }
   
+  public int getCurrentSceneIndex() {
+    return currentSceneIndex;
+  }
+  
   public void nextScene() {
     gotoScene(currentSceneIndex + 1);
   }

@@ -2,8 +2,12 @@ package com.rattyduck.viz.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -22,27 +26,38 @@ public class NumericPropertyControl extends JPanel implements ScenePropertyChang
   private JLabel valueLabel;
   private JSlider slider;
   private NumericSceneProperty property;
+  private float defaultValue;
   
   public NumericPropertyControl(NumericSceneProperty property) {
     this.property = property;
+    this.defaultValue = property.get();
     
     property.addChangeListener(this);
     
-    setLayout(new BorderLayout());
+    setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     
     JLabel nameLabel = new JLabel(property.getName());
     nameLabel.setPreferredSize(new Dimension(150, 20));
     nameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-    this.add(nameLabel, BorderLayout.WEST);
-
-    valueLabel = new JLabel(Float.toString(property.get()));
-    valueLabel.setPreferredSize(new Dimension(50, 20));
-    this.add(valueLabel, BorderLayout.EAST);
+    this.add(nameLabel);
         
     slider = new JSlider(JSlider.HORIZONTAL, 0, MAX_SLIDER, 6);
     slider.setPreferredSize(new Dimension(200, 20));
     slider.addChangeListener(this);
-    this.add(slider, BorderLayout.CENTER);
+    this.add(slider);
+    
+    valueLabel = new JLabel(Float.toString(property.get()));
+    valueLabel.setPreferredSize(new Dimension(50, 20));
+    this.add(valueLabel);
+    
+    JButton reset = new JButton("0");
+    reset.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        property.set(defaultValue);
+      }
+    });
+    add(reset);
     
     scenePropertyChanged(property);
   }
