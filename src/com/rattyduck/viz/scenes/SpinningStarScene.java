@@ -20,7 +20,7 @@ import processing.core.PGraphics;
 
 public class SpinningStarScene extends Scene {
   @ControllableProperty
-  public NumericSceneProperty sphereSize = SceneProperty.numeric("Sphere size", 200f, 20f, 300f);
+  public NumericSceneProperty sphereSize = SceneProperty.numeric("Sphere size", 200, 20, 1000);
   @ControllableProperty
   public NumericSceneProperty rotationSpeed = SceneProperty.numeric("Rotation speed", 0.1f, -0.2f, 0.2f);
   
@@ -38,7 +38,6 @@ public class SpinningStarScene extends Scene {
   
   public void start() {
     super.start();
-    
     createSpheres(0xfff8e7f8, 1000, 0, 6, 3);
     createSpheres(0xfffff394, 1000, 7, 20, 5);
     createSpheres(0xffffc994, 1000, 20, 25, 2);

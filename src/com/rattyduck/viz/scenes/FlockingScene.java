@@ -39,13 +39,14 @@ public class FlockingScene extends Scene {
     super(width, height);
     beat = new BeatDetect();
     beat.setSensitivity(300);
+    
+    Box bounds = new Box(new PVector(0, 0, -500), width, height, 1000);
+    boids = new Boids(bounds);
   }
   
   public void start() {
     super.start();
 
-    Box bounds = new Box(new PVector(0, 0, -500), width, height, 1000);
-    boids = new Boids(bounds);
     renderers = new ArrayList<>();
     
     for (int i = 0; i < numBoids.get(); i++) {
@@ -56,7 +57,7 @@ public class FlockingScene extends Scene {
   
   public void kill() {
     super.kill();
-    boids = null;
+    boids.clear();
   }
   
   public void render(int deltaMillis, AudioSource audio, PGraphics g) {

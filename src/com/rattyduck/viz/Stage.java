@@ -55,6 +55,10 @@ public class Stage {
     gotoScene(currentSceneIndex - 1);
   }
   
+  public void restartCurrentScene() {
+    gotoScene(currentSceneIndex);
+  }
+  
   public void update() {
     g.background(0);
     long millis = System.currentTimeMillis();

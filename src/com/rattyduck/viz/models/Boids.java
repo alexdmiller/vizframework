@@ -15,15 +15,25 @@ public class Boids implements Iterable<Boid> {
   @ControllableProperty
   public NumericSceneProperty maxSpeed = SceneProperty.numeric("Max speed", 4, 0, 10);
 
-  public float maxSteerForce = 0.1f;
-  public float neighborhoodRadius = 100;
-  public float separationWeight = 10;
+  @ControllableProperty
+  public NumericSceneProperty maxSteerForce = SceneProperty.numeric("Max steer force", 0.1f, 0f, 1f);
+  
+  @ControllableProperty
+  public NumericSceneProperty neighborhoodRadius = SceneProperty.numeric("Neighborhood radius", 100, 0, 1000);
+  
+  @ControllableProperty
+  public NumericSceneProperty separationWeight = SceneProperty.numeric("Separation", 1, 0, 20);
   
   @ControllableProperty
   public NumericSceneProperty cohesionWeight = SceneProperty.numeric("Cohesion", 1, 0, 20);
 
-  public float alignmentWeight = 3;
-  public float avoidWeight = 20;
+  @ControllableProperty
+  public NumericSceneProperty alignmentWeight = SceneProperty.numeric("Alignment", 1, 0, 20);
+  
+  @ControllableProperty
+  public NumericSceneProperty avoidWeight = SceneProperty.numeric("Wall avoidance", 10, 0, 20);
+  
+  @ControllableProperty
   public Box bounds;
   
   private transient List<Boid> boids;
@@ -60,9 +70,9 @@ public class Boids implements Iterable<Boid> {
     }
     
     public void update(int millis) {
-      acc.add(PVector.mult(alignment(), alignmentWeight));
+      acc.add(PVector.mult(alignment(), alignmentWeight.get()));
       acc.add(PVector.mult(cohesion(), cohesionWeight.get()));
-      acc.add(PVector.mult(separation(), separationWeight));
+      acc.add(PVector.mult(separation(), separationWeight.get()));
       vel.add(acc);
       vel.limit(maxSpeed.get());
       pos.add(vel);
@@ -83,7 +93,7 @@ public class Boids implements Iterable<Boid> {
     public void bound(Box bounds) {
       List<PVector> projectedPoints = bounds.getProjectedPoints(pos);
       for (PVector p : projectedPoints) {
-        acc.add(PVector.mult(avoid(p, true), avoidWeight));
+        acc.add(PVector.mult(avoid(p, true), avoidWeight.get()));
       }
     }
     
@@ -92,7 +102,7 @@ public class Boids implements Iterable<Boid> {
       int total = 0;
       for (Boid b : boids) {
         float distance = b.pos.dist(this.pos);
-        if (distance > 0 && distance < neighborhoodRadius) {
+        if (distance > 0 && distance < neighborhoodRadius.get()) {
           averageVelocity.add(b.vel);
           total++;
         }
@@ -100,7 +110,7 @@ public class Boids implements Iterable<Boid> {
       if (total > 0) {
         averageVelocity.div(total);
       }
-      averageVelocity.limit(maxSteerForce);
+      averageVelocity.limit(maxSteerForce.get());
       return averageVelocity;
     }
   
@@ -109,7 +119,7 @@ public class Boids implements Iterable<Boid> {
       int total = 0;
       for (Boid b : boids) {
         float distance = b.pos.dist(this.pos);
-        if (distance > 0 && distance < neighborhoodRadius) {
+        if (distance > 0 && distance < neighborhoodRadius.get()) {
           averagePosition.add(b.pos);
           total++;
         }
@@ -120,7 +130,7 @@ public class Boids implements Iterable<Boid> {
       averagePosition.div(total);
       PVector cohesionForce = PVector.sub(averagePosition, this.pos);
       cohesionForce.normalize();
-      cohesionForce.limit(maxSteerForce);
+      cohesionForce.limit(maxSteerForce.get());
       return cohesionForce;
     }
   
@@ -128,14 +138,14 @@ public class Boids implements Iterable<Boid> {
       PVector separationForce = new PVector();
       for (Boid b : boids) {
         float distance = b.pos.dist(this.pos);
-        if (distance > 0 && distance < neighborhoodRadius) {
+        if (distance > 0 && distance < neighborhoodRadius.get()) {
           PVector f = PVector.sub(pos, b.pos);
           f.normalize();
           f.div(distance);
           separationForce.add(f);
         }
       }
-      separationForce.limit(maxSteerForce);
+      separationForce.limit(maxSteerForce.get());
       return separationForce;
     }
   }
@@ -144,5 +154,9 @@ public class Boids implements Iterable<Boid> {
     Boid b = new Boid(bounds.randomPoint());
     boids.add(b);
     return b;
+  }
+
+  public void clear() {
+    boids.clear();
   }
 }

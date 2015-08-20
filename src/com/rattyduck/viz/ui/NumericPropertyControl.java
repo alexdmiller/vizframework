@@ -16,7 +16,7 @@ import com.rattyduck.viz.SceneProperty.NumericSceneProperty;
 import com.rattyduck.viz.ScenePropertyChangeListener;
 
 public class NumericPropertyControl extends JPanel implements ScenePropertyChangeListener, ChangeListener {
-  private static int MAX_SLIDER = 100;
+  private static int MAX_SLIDER = 1000;
   private static DecimalFormat format = new DecimalFormat("#.##");
   
   private JLabel valueLabel;

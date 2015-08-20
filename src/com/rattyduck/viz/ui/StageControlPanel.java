@@ -35,6 +35,15 @@ public class StageControlPanel extends JPanel implements SceneChangeListener {
       }
     });
     add(prev, BorderLayout.WEST);
+    
+    JButton restart = new JButton("Restart");
+    restart.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        stage.restartCurrentScene();
+      }
+    });
+    add(restart, BorderLayout.CENTER);
         
     JButton next = new JButton("Next");
     next.addActionListener(new ActionListener() {

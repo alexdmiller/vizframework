@@ -1,5 +1,5 @@
 {
-  "@id":188,
+  "@id":170,
   "@type":"com.rattyduck.viz.Stage",
   "scenes":{
     "@type":"java.util.ArrayList",
@@ -11,26 +11,26 @@
         "name":"Setup"
       },
       {
-        "@id":883,
+        "@id":1247,
         "@type":"com.rattyduck.viz.scenes.SpinningStarScene",
         "sphereSize":{
-          "@id":882,
+          "@id":230,
           "min":20.0,
-          "max":300.0,
+          "max":1000.0,
           "name":"Sphere size",
           "value":{
             "@type":"float",
-            "value":300.0
+            "value":617.8
           }
         },
         "rotationSpeed":{
-          "@id":881,
+          "@id":216,
           "min":-0.2,
           "max":0.2,
           "name":"Rotation speed",
           "value":{
             "@type":"float",
-            "value":0.03199999
+            "value":0.009200007
           }
         },
         "width":1920,
@@ -39,10 +39,94 @@
       },
       {
         "@type":"com.rattyduck.viz.scenes.FlockingScene",
+        "numBoids":{
+          "min":10.0,
+          "max":2000.0,
+          "name":"Boid count",
+          "value":{
+            "@type":"float",
+            "value":408.0
+          }
+        },
+        "boids":{
+          "maxSpeed":{
+            "min":0.0,
+            "max":10.0,
+            "name":"Max speed",
+            "value":{
+              "@type":"float",
+              "value":4.4
+            }
+          },
+          "maxSteerForce":{
+            "min":0.0,
+            "max":1.0,
+            "name":"Max steer force",
+            "value":{
+              "@type":"float",
+              "value":0.1
+            }
+          },
+          "neighborhoodRadius":{
+            "min":0.0,
+            "max":1000.0,
+            "name":"Neighborhood radius",
+            "value":{
+              "@type":"float",
+              "value":100.0
+            }
+          },
+          "separationWeight":{
+            "min":0.0,
+            "max":20.0,
+            "name":"Separation",
+            "value":{
+              "@type":"float",
+              "value":2.0
+            }
+          },
+          "cohesionWeight":{
+            "min":0.0,
+            "max":20.0,
+            "name":"Cohesion",
+            "value":{
+              "@type":"float",
+              "value":1.0
+            }
+          },
+          "alignmentWeight":{
+            "min":0.0,
+            "max":20.0,
+            "name":"Alignment",
+            "value":{
+              "@type":"float",
+              "value":1.0
+            }
+          },
+          "avoidWeight":{
+            "min":0.0,
+            "max":20.0,
+            "name":"Wall avoidance",
+            "value":{
+              "@type":"float",
+              "value":10.0
+            }
+          },
+          "bounds":{
+            "position":{
+              "x":0.0,
+              "y":0.0,
+              "z":-500.0
+            },
+            "width":1920.0,
+            "height":1035.0,
+            "depth":1000.0
+          }
+        },
         "width":1920,
         "height":1035,
         "name":"Birds"
-      },
+      }
     ]
   }
 }

@@ -6,11 +6,18 @@ import java.util.List;
 import processing.core.PVector;
 
 public class Box {
-  private PVector position;
-  private float width;
-  private float height;
-  private float depth;
+  public PVector position;
+  public float width;
+  public float height;
+  public float depth;
   
+  public Box() {
+    this.position = new PVector();
+    this.width = 0;
+    this.height = 0;
+    this.depth = 0;
+  }
+
   public Box(PVector pos, float width, float height, float depth) {
     this.position = pos.get();
     this.width = width;
