@@ -21,7 +21,7 @@ public class SpinningStarScene extends Scene {
   public NumericSceneProperty sphereSize =
       SceneProperty.numeric("Sphere size", 200f, 20f, 300f);
   public NumericSceneProperty rotationSpeed =
-      SceneProperty.numeric("Rotation speed", 0.1f, 0f, 1f);
+      SceneProperty.numeric("Rotation speed", 0.1f, -0.2f, 0.2f);
   
   private transient ArrayList<Sphere> spheres;
   private transient float cameraAngle;

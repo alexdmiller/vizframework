@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SceneProperty<T> {
-  private List<ScenePropertyChangeListener> listeners;
+  private transient List<ScenePropertyChangeListener> listeners;
   
   public static NumericSceneProperty numeric(
       String name, float defaultValue, float min, float max) {

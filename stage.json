@@ -1,5 +1,5 @@
 {
-  "@id":421,
+  "@id":188,
   "@type":"com.rattyduck.viz.Stage",
   "scenes":{
     "@type":"java.util.ArrayList",
@@ -11,8 +11,28 @@
         "name":"Setup"
       },
       {
-        "@id":845,
+        "@id":883,
         "@type":"com.rattyduck.viz.scenes.SpinningStarScene",
+        "sphereSize":{
+          "@id":882,
+          "min":20.0,
+          "max":300.0,
+          "name":"Sphere size",
+          "value":{
+            "@type":"float",
+            "value":300.0
+          }
+        },
+        "rotationSpeed":{
+          "@id":881,
+          "min":-0.2,
+          "max":0.2,
+          "name":"Rotation speed",
+          "value":{
+            "@type":"float",
+            "value":0.03199999
+          }
+        },
         "width":1920,
         "height":1035,
         "name":"Stars"
