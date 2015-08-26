@@ -2,6 +2,7 @@ package com.rattyduck.viz.renderers;
 
 import com.rattyduck.viz.models.Boids.Boid;
 
+import ddf.minim.analysis.BeatDetect;
 import processing.core.PGraphics;
 
 public class ButterflyBoidRenderer extends BoidRenderer {
@@ -21,7 +22,7 @@ public class ButterflyBoidRenderer extends BoidRenderer {
   }
 
   @Override
-  public void render(PGraphics g, int millis) {
+  public void render(PGraphics g, int millis, BeatDetect beat) {    
     g.pushMatrix();
     g.translate(boid.pos.x, boid.pos.y, boid.pos.z);
     g.rotateY((float) Math.atan2(-boid.vel.z, boid.vel.x));

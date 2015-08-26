@@ -3,12 +3,6 @@ package com.rattyduck.viz.scenes;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import com.rattyduck.viz.ControllableProperty;
 import com.rattyduck.viz.Scene;
 import com.rattyduck.viz.SceneProperty;
@@ -18,7 +12,6 @@ import com.rattyduck.viz.models.Boids.Boid;
 import com.rattyduck.viz.models.Box;
 import com.rattyduck.viz.renderers.BoidRenderer;
 import com.rattyduck.viz.renderers.ButterflyBoidRenderer;
-import com.rattyduck.viz.ui.NumericPropertyControl;
 
 import ddf.minim.AudioSource;
 import ddf.minim.analysis.BeatDetect;
@@ -64,7 +57,7 @@ public class FlockingScene extends Scene {
     boids.update(deltaMillis);
     beat.detect(audio.mix);
     for (BoidRenderer br : renderers) {
-      br.render(g, deltaMillis);
+      br.render(g, deltaMillis, beat);
     }
   }
 }

@@ -1,41 +1,35 @@
 {
-  "@id":175,
+  "@id":182,
   "@type":"com.rattyduck.viz.Stage",
   "scenes":{
     "@type":"java.util.ArrayList",
     "@items":[
-      {
-        "@type":"com.rattyduck.viz.scenes.SetupScene",
-        "width":1920,
-        "height":1035,
-        "name":"Setup"
-      },
-      {
-        "@id":1214,
+          {
+        "@id":1034,
         "@type":"com.rattyduck.viz.scenes.SpinningStarScene",
         "sphereSize":{
-          "@id":238,
+          "@id":245,
           "min":20.0,
           "max":1000.0,
           "name":"Sphere size",
           "value":{
             "@type":"float",
-            "value":601.14
+            "value":459.04
           }
         },
         "rotationSpeed":{
-          "@id":212,
+          "@id":219,
           "min":-0.2,
           "max":0.2,
           "name":"Rotation speed",
           "value":{
             "@type":"float",
-            "value":0.009200007
+            "value":0.011599988
           }
         },
-        "width":1920,
-        "height":1035,
-        "name":"Stars"
+        "width":0,
+        "height":0,
+        "name":null
       },
       {
         "@type":"com.rattyduck.viz.scenes.FlockingScene",
@@ -126,7 +120,28 @@
         "width":1920,
         "height":1035,
         "name":"Birds"
+      },
+      {
+        "@type":"com.rattyduck.viz.scenes.TunnelScene",
+        "width":1920,
+        "height":1035,
+        "name":null
+      },
+      {
+        "@type":"com.rattyduck.viz.scenes.HyperSpaceScene",
+        "sphereSize":200.0,
+        "width":1920,
+        "height":1035,
+        "name":null
+      },
+      {
+        "@type":"com.rattyduck.viz.scenes.LatticeScene",
+        "lattice":null,
+        "width":1920,
+        "height":1035,
+        "name":null
       }
+
     ]
   }
 }

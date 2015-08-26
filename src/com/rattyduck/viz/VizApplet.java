@@ -27,9 +27,11 @@ import com.rattyduck.viz.scenes.SetupScene;
 import com.rattyduck.viz.scenes.SpinningStarScene;
 import com.rattyduck.viz.ui.StageControlPanel;
 
+import codeanticode.syphon.SyphonServer;
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
 import processing.core.PApplet;
+import processing.core.PGraphics;
 
 public class VizApplet extends PApplet implements Controllable {
   private static final String STAGE_FILENAME = "stage.json";
@@ -38,6 +40,8 @@ public class VizApplet extends PApplet implements Controllable {
   private JFrame frame;
   private AudioPlayer audio;
   private ActionListener setupListener;
+  PGraphics canvas;
+  SyphonServer server;
   
   public VizApplet(ActionListener setupListener, JFrame frame) {
     this.setupListener = setupListener;
@@ -48,8 +52,13 @@ public class VizApplet extends PApplet implements Controllable {
     size(this.width, this.height, P3D);
     smooth();
     
+    canvas = createGraphics(this.width, this.height, P3D);
+
+    // Create syhpon server to send frames out.
+    server = new SyphonServer(this, "Processing Syphon");
+    
     Minim minim = new Minim(this);
-    audio = minim.loadFile("dirty ass rap beat.mp3");
+    audio = minim.loadFile("reverie.mp3");
     
     File file = new File(STAGE_FILENAME);
     try {
@@ -70,6 +79,13 @@ public class VizApplet extends PApplet implements Controllable {
   }
 
   public void draw() {
+    canvas.beginDraw();
+    canvas.background(100);
+    canvas.stroke(255);
+    canvas.line(50, 50, 100, 100);
+    canvas.endDraw();
+    server.sendImage(canvas);
+      
     stage.update();
   }
 

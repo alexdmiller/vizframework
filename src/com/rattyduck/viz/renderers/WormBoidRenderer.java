@@ -3,6 +3,7 @@ package com.rattyduck.viz.renderers;
 import com.google.common.collect.EvictingQueue;
 import com.rattyduck.viz.models.Boids.Boid;
 
+import ddf.minim.analysis.BeatDetect;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
@@ -15,7 +16,7 @@ public class WormBoidRenderer extends BoidRenderer {
   }
 
   @Override
-  public void render(PGraphics g, int millis) {
+  public void render(PGraphics g, int millis, BeatDetect beat) {
     history.add(boid.pos.get());
     
     PVector last = null;

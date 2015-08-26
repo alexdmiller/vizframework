@@ -79,6 +79,10 @@ public class Boids implements Iterable<Boid> {
       acc.mult(0);
     }
     
+    public void attract(PVector target) {
+      // todo
+    }
+    
     public PVector avoid(PVector target, boolean weighted) {
       PVector steer = new PVector();
       steer.set(PVector.sub(pos, target));

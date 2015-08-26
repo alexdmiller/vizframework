@@ -76,7 +76,7 @@ public class Main extends JFrame {
         canvasSize = Toolkit.getDefaultToolkit().getScreenSize();
       } else {
         canvasSize = new Dimension(1920, 1050);
-        this.setLocation(0, 0);        
+        this.setLocation(0, 0);
       }
       
       applet.frame = self;
