@@ -73,9 +73,11 @@ public class Boids implements Iterable<Boid> {
       acc.add(PVector.mult(alignment(), alignmentWeight.get()));
       acc.add(PVector.mult(cohesion(), cohesionWeight.get()));
       acc.add(PVector.mult(separation(), separationWeight.get()));
+      
       vel.add(acc);
       vel.limit(maxSpeed.get());
-      pos.add(vel);
+      pos.add(PVector.mult(vel, millis / 20f));
+      
       acc.mult(0);
     }
     

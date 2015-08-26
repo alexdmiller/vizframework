@@ -75,7 +75,7 @@ public class Main extends JFrame {
         gd.setFullScreenWindow(this);
         canvasSize = Toolkit.getDefaultToolkit().getScreenSize();
       } else {
-        canvasSize = new Dimension(1920, 1050);
+        canvasSize = new Dimension(VizApplet.WIDTH / 2, VizApplet.HEIGHT / 2);
         this.setLocation(0, 0);
       }
       

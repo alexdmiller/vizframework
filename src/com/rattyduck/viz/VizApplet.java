@@ -34,6 +34,9 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 
 public class VizApplet extends PApplet implements Controllable {
+  public static final int WIDTH = 1920;
+  public static final int HEIGHT = 1080;
+  
   private static final String STAGE_FILENAME = "stage.json";
 
   private Stage stage;
@@ -51,8 +54,9 @@ public class VizApplet extends PApplet implements Controllable {
   public void setup() {
     size(this.width, this.height, P3D);
     smooth();
+    frameRate(30);
     
-    canvas = createGraphics(this.width, this.height, P3D);
+    canvas = createGraphics(WIDTH, HEIGHT, P3D);
 
     // Create syhpon server to send frames out.
     server = new SyphonServer(this, "Processing Syphon");
@@ -71,7 +75,7 @@ public class VizApplet extends PApplet implements Controllable {
       stage.addScene(new SetupScene(width, height));
     }
 
-    stage.init(audio, g);
+    stage.init(audio, canvas);
     stage.gotoScene(0);
     audio.play();
 
@@ -79,14 +83,12 @@ public class VizApplet extends PApplet implements Controllable {
   }
 
   public void draw() {
-    canvas.beginDraw();
-    canvas.background(100);
-    canvas.stroke(255);
-    canvas.line(50, 50, 100, 100);
+    canvas.beginDraw();  
+    stage.update();
     canvas.endDraw();
     server.sendImage(canvas);
-      
-    stage.update();
+
+    g.image(canvas, 0, 0, this.width, this.height);
   }
 
   public Stage getStage() {

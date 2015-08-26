@@ -12,6 +12,8 @@ import com.rattyduck.viz.models.Boids.Boid;
 import com.rattyduck.viz.models.Box;
 import com.rattyduck.viz.renderers.BoidRenderer;
 import com.rattyduck.viz.renderers.ButterflyBoidRenderer;
+import com.rattyduck.viz.renderers.SimpleBoidRenderer;
+import com.rattyduck.viz.renderers.WormBoidRenderer;
 
 import ddf.minim.AudioSource;
 import ddf.minim.analysis.BeatDetect;

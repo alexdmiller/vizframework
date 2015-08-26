@@ -22,7 +22,7 @@ public class SpinningStarScene extends Scene {
   @ControllableProperty
   public NumericSceneProperty sphereSize = SceneProperty.numeric("Sphere size", 200, 20, 1000);
   @ControllableProperty
-  public NumericSceneProperty rotationSpeed = SceneProperty.numeric("Rotation speed", 0.1f, -0.2f, 0.2f);
+  public NumericSceneProperty rotationSpeed = SceneProperty.numeric("Rotation speed", 0.1f, -0.01f, 0.01f);
   
   private transient ArrayList<Sphere> spheres;
   private transient float cameraAngle;
@@ -67,6 +67,9 @@ public class SpinningStarScene extends Scene {
       0, 0, 0,
       0, -1, 0);
     cameraAngle += rotationSpeed.get();
+    
+    System.out.println((rotationSpeed.get() * (float) deltaMillis / 60f));
+    
     g.background(0);
     beat.detect(audio.mix);
     
