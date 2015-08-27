@@ -68,8 +68,6 @@ public class SpinningStarScene extends Scene {
       0, -1, 0);
     cameraAngle += rotationSpeed.get();
     
-    System.out.println((rotationSpeed.get() * (float) deltaMillis / 60f));
-    
     g.background(0);
     beat.detect(audio.mix);
     
