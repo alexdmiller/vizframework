@@ -1,39 +1,40 @@
 package com.rattyduck.viz;
 
 import java.awt.BorderLayout;
-import java.awt.Checkbox;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+
+import com.rattyduck.viz.ui.SketchControlPanel;
 
 import processing.core.PApplet; 
 
 public class Main extends JFrame {
   private static final long serialVersionUID = 1L;
   
-  VizApplet viz;
-  PAppletContainer vizContainer;
-  Checkbox fullScreenCheckbox;
-  JPanel startPanel;
+  private Sketch sketch;
+  private PAppletContainer sketchContainer;
+  private SketchControlPanel sketchControl;
   
   public Main() {
     setLayout(new BorderLayout());
     setVisible(true);
     setPreferredSize(new Dimension(600, 1000));
     
-    viz = new VizApplet(new ActionListener() {
+    sketch = new Sketch(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-          add(viz.getControlPanel(), BorderLayout.CENTER);
-          pack();
+
         }
       }, this);
-  
-    vizContainer = new PAppletContainer(viz);
+    sketchContainer = new PAppletContainer(sketch);
+    
+    sketchControl = new SketchControlPanel(sketch);
+    add(sketchControl, BorderLayout.CENTER);
+    pack();
   }
   
   class PAppletContainer extends JFrame {    
@@ -45,7 +46,7 @@ public class Main extends JFrame {
       
       setVisible(true);
       
-      Dimension canvasSize = new Dimension(VizApplet.WIDTH / 2, VizApplet.HEIGHT / 2);
+      Dimension canvasSize = new Dimension(Sketch.WIDTH / 2, Sketch.HEIGHT / 2);
       this.setLocation(0, 0);
 
       applet.frame = this;

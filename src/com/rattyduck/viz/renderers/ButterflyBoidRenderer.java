@@ -6,7 +6,7 @@ import ddf.minim.analysis.BeatDetect;
 import processing.core.PGraphics;
 
 public class ButterflyBoidRenderer extends BoidRenderer {
-  private static int[] availableColors = {0xFFff6161, 0xFFb061ff, 0xff61c5ff, 0xff61ff93, 0xfffff461};
+  private static int[] availableColors = {0xffffe8e8, 0xfffeffe8, 0xffe8ffff, 0xfffae8ff, 0xffffe8ef};
   
   private float theta;
   private float bodySize;
@@ -16,8 +16,8 @@ public class ButterflyBoidRenderer extends BoidRenderer {
   public ButterflyBoidRenderer(Boid b) {
     super(b);
     theta = (float) (Math.random() * Math.PI * 2);
-    bodySize = (float) (Math.random() * 20 + 5);
-    wingSpan = (float) (Math.random() * 10 + 1);
+    bodySize = (float) (Math.random() * 20 + 20);
+    wingSpan = (float) (Math.random() * 10 + 20);
     wingColor = availableColors[(int) Math.floor(Math.random() * availableColors.length)];
   }
 

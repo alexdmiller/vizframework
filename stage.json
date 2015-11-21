@@ -5,33 +5,6 @@
     "@type":"java.util.ArrayList",
     "@items":[
       {
-        "@id":1045,
-        "@type":"com.rattyduck.viz.scenes.SpinningStarScene",
-        "sphereSize":{
-          "@id":252,
-          "min":20.0,
-          "max":1000.0,
-          "name":"Sphere size",
-          "value":{
-            "@type":"float",
-            "value":384.56
-          }
-        },
-        "rotationSpeed":{
-          "@id":226,
-          "min":-0.2,
-          "max":0.2,
-          "name":"Rotation speed",
-          "value":{
-            "@type":"float",
-            "value":-0.0676
-          }
-        },
-        "width":0,
-        "height":0,
-        "name":null
-      },
-      {
         "@type":"com.rattyduck.viz.scenes.FlockingScene",
         "numBoids":{
           "min":10.0,

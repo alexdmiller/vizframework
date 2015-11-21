@@ -13,6 +13,7 @@ import com.rattyduck.viz.models.Box;
 import com.rattyduck.viz.renderers.BoidRenderer;
 import com.rattyduck.viz.renderers.ButterflyBoidRenderer;
 import com.rattyduck.viz.renderers.SimpleBoidRenderer;
+import com.rattyduck.viz.renderers.TriangleBoidRenderer;
 import com.rattyduck.viz.renderers.WormBoidRenderer;
 
 import ddf.minim.AudioSource;
@@ -46,7 +47,15 @@ public class FlockingScene extends Scene {
     
     for (int i = 0; i < numBoids.get(); i++) {
       Boid b = boids.createRandomBoid();
-      renderers.add(new ButterflyBoidRenderer(b));
+      
+      double r = Math.random(); 
+      if (r < 0.33) {
+        renderers.add(new WormBoidRenderer(b, 50, 255, 50, 50));
+      } else if (r < 0.66) {
+        renderers.add(new WormBoidRenderer(b, 50, 255, 255, 50));
+      } else {
+        renderers.add(new WormBoidRenderer(b, 50, 50, 100, 255));
+      }
     }
   }
   

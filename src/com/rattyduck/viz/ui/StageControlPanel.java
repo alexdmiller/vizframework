@@ -63,6 +63,6 @@ public class StageControlPanel extends JPanel implements SceneChangeListener {
     sceneControl = new SceneControlPanel(stage.getCurrentScene());
     add(sceneControl, BorderLayout.SOUTH);
     repaint();
-    frame.pack();
+    //frame.pack();
   }
 }

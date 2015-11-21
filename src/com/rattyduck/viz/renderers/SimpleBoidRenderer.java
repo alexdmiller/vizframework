@@ -12,8 +12,8 @@ public class SimpleBoidRenderer extends BoidRenderer {
 
   @Override
   public void render(PGraphics g, int millis, BeatDetect beat) {
-    g.stroke(255);
-    g.strokeWeight(4);
+    g.stroke(255, 255, 0);
+    g.strokeWeight(20);
     g.point(boid.pos.x, boid.pos.y, boid.pos.z);
   }
 }

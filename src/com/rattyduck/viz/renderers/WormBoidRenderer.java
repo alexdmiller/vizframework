@@ -9,10 +9,14 @@ import processing.core.PVector;
 
 public class WormBoidRenderer extends BoidRenderer {
   public EvictingQueue<PVector> history;
+  private float red, green, blue;
 
-  public WormBoidRenderer(Boid b, int historySize) {
+  public WormBoidRenderer(Boid b, int historySize, float red, float green, float blue) {
     super(b);
     history = EvictingQueue.create(historySize);
+    this.red = red;
+    this.blue = blue;
+    this.green = green;
   }
 
   @Override
@@ -20,8 +24,8 @@ public class WormBoidRenderer extends BoidRenderer {
     history.add(boid.pos.get());
     
     PVector last = null;
-    g.stroke(255);
-    g.strokeWeight(1);
+    g.stroke(red, green, blue);
+    g.strokeWeight(10);
     for (PVector p : history) {
       if (last != null) {
         g.line(last.x, last.y, last.z, p.x, p.y, p.z);
