@@ -28,8 +28,7 @@ public class SpinningStarScene extends Scene {
   private transient float cameraAngle;
   private transient BeatDetect beat;
 
-  public SpinningStarScene(int width, int height) {
-    super(width, height);
+  public SpinningStarScene() {
     spheres = new ArrayList<Sphere>();
     beat = new BeatDetect();
     beat.detectMode(BeatDetect.FREQ_ENERGY);

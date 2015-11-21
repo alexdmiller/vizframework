@@ -15,8 +15,7 @@ public class TunnelScene extends Scene {
   
   private transient List<Float> circles = new ArrayList<>();
 
-  public TunnelScene(int width, int height) {
-    super(width, height);
+  public TunnelScene() {
     beat = new BeatDetect();
     beat.detectMode(BeatDetect.SOUND_ENERGY);
     beat.setSensitivity(300);

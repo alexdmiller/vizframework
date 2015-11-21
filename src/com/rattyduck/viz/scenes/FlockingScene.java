@@ -23,39 +23,30 @@ import processing.core.PVector;
 
 public class FlockingScene extends Scene {
   @ControllableProperty
-  public NumericSceneProperty numBoids = SceneProperty.numeric("Boid count", 600, 10, 2000);
+  public NumericSceneProperty numBoids = SceneProperty.numeric("Boid count", 60, 10, 2000);
   
   @ControllableProperty
   public Boids boids;
   
   private transient List<BoidRenderer> renderers;
   private transient BeatDetect beat;
-  
-  public FlockingScene(int width, int height) {
-    super(width, height);
+
+  public FlockingScene() {
     beat = new BeatDetect();
     beat.setSensitivity(300);
-    
-    Box bounds = new Box(new PVector(0, 0, -500), width, height, 1000);
-    boids = new Boids(bounds);
   }
   
   public void start() {
     super.start();
+    
+    Box bounds = new Box(new PVector(0, 0, -500), width, height, 1000);
+    boids = new Boids(bounds);
 
     renderers = new ArrayList<>();
     
     for (int i = 0; i < numBoids.get(); i++) {
       Boid b = boids.createRandomBoid();
-      
-      double r = Math.random(); 
-      if (r < 0.33) {
-        renderers.add(new WormBoidRenderer(b, 50, 255, 50, 50));
-      } else if (r < 0.66) {
-        renderers.add(new WormBoidRenderer(b, 50, 255, 255, 50));
-      } else {
-        renderers.add(new WormBoidRenderer(b, 50, 50, 100, 255));
-      }
+      renderers.add(new SimpleBoidRenderer(b));
     }
   }
   

@@ -13,15 +13,6 @@ public class SketchControlPanel extends JPanel {
   public SketchControlPanel(Sketch sketch) {
     setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
     
-    JButton playMusic = new JButton("Play Music");
-    playMusic.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        sketch.playAudio();
-      }
-    });
-    add(playMusic);
-    
     JButton saveStage = new JButton("Save");
     saveStage.addActionListener(new ActionListener() {
       @Override

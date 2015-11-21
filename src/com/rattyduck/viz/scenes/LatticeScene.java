@@ -21,9 +21,7 @@ public class LatticeScene extends Scene {
   
   private transient BeatDetect beat;
   
-  public LatticeScene(int width, int height, PGraphics g) {
-    super(width, height);
-    
+  public LatticeScene() {    
     beat = new BeatDetect();
     beat.setSensitivity(300);
   }

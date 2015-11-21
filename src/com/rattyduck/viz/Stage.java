@@ -7,6 +7,7 @@ import ddf.minim.AudioSource;
 import processing.core.PGraphics;
 
 public class Stage {
+  private static final long MAX_TIMESTEP = 1000;
   private transient Scene currentScene;
   private transient int nextSceneIndex;
   private transient int currentSceneIndex;
@@ -66,7 +67,8 @@ public class Stage {
   public void update() {
     g.background(0);
     long millis = System.currentTimeMillis();
-    long delta = millis - lastMillis;
+    long delta = Math.min(millis - lastMillis, MAX_TIMESTEP);
+    
     if (currentScene == null || currentScene.isFinished()) {
       if (nextSceneIndex == -1) {
         throw new Error("A new scene is not scheduled to run next.");

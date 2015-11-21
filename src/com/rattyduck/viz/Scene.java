@@ -12,11 +12,6 @@ public abstract class Scene {
   protected int height;
   protected String name;
   
-  public Scene(int width, int height) {
-    this.width = width;
-    this.height = height;
-  }
-  
   public void start() {
     this.isFinished = false;
   }

@@ -16,8 +16,7 @@ public class HyperSpaceScene extends Scene {
   private transient ArrayList<Sphere> spheres;
   private transient BeatDetect beat;
 
-  public HyperSpaceScene(int width, int height) {
-    super(width, height);
+  public HyperSpaceScene() {
     spheres = new ArrayList<Sphere>();
     beat = new BeatDetect();
     beat.detectMode(BeatDetect.FREQ_ENERGY);

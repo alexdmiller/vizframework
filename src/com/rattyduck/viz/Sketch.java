@@ -29,6 +29,7 @@ import com.rattyduck.viz.ui.StageControlPanel;
 
 import codeanticode.syphon.SyphonServer;
 import ddf.minim.AudioPlayer;
+import ddf.minim.AudioSource;
 import ddf.minim.Minim;
 import processing.core.PApplet;
 import processing.core.PGraphics;
@@ -41,7 +42,7 @@ public class Sketch extends PApplet {
 
   private Stage stage;
   private JFrame frame;
-  private AudioPlayer audio;
+  private AudioSource audio;
   private ActionListener setupListener;
   private boolean recording;
   
@@ -60,7 +61,7 @@ public class Sketch extends PApplet {
       reader.close();
     } catch (IOException e) {
       stage = new Stage();
-      stage.addScene(new SetupScene(width, height));
+      stage.addScene(new SetupScene());
     }
   }
   
@@ -75,11 +76,10 @@ public class Sketch extends PApplet {
     server = new SyphonServer(this, "Processing Syphon");
     
     Minim minim = new Minim(this);
-    audio = minim.loadFile("reverie.mp3");
+    audio = minim.getLineIn();
 
     stage.init(audio, canvas);
     stage.gotoScene(0);
-    audio.play();
 
     setupListener.actionPerformed(null);
   }
@@ -91,15 +91,6 @@ public class Sketch extends PApplet {
     server.sendImage(canvas);
 
     g.image(canvas, 0, 0, this.width, this.height);
-    
-  }
-
-  public void playAudio() {
-    audio.play();
-  }
-  
-  public void pauseAudio() {
-    audio.pause();
   }
   
   public Stage getStage() {

@@ -25,9 +25,7 @@ public class TreeScene extends Scene {
   private Tree tree;
   List<PVector> attractors;
   
-  public TreeScene(int width, int height, PGraphics g) {
-    super(width, height);
-    
+  public TreeScene() {    
     attractors = new ArrayList<PVector>();
     tree = new Tree();
     beat = new BeatDetect();

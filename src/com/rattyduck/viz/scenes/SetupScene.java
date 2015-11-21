@@ -9,8 +9,7 @@ import processing.core.PGraphics;
 public class SetupScene extends Scene {
   private transient BeatDetect beat;
 
-  public SetupScene(int width, int height) {
-    super(width, height);
+  public SetupScene() {
     beat = new BeatDetect();
     beat.detectMode(BeatDetect.FREQ_ENERGY);
     beat.setSensitivity(300);
