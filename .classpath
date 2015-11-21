@@ -30,5 +30,6 @@
 	<classpathentry kind="lib" path="guava/library/guava.jar"/>
 	<classpathentry kind="lib" path="library/jsyphon.jar"/>
 	<classpathentry kind="lib" path="library/Syphon.jar"/>
+	<classpathentry kind="lib" path="controlP5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
