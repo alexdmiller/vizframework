@@ -16,23 +16,21 @@ public class Main extends JFrame {
   private static final long serialVersionUID = 1L;
   
   private Sketch sketch;
-  private PAppletContainer sketchContainer;
   private SketchControlPanel sketchControl;
   
   public Main() {
     setLayout(new BorderLayout());
-    setVisible(true);
-    setPreferredSize(new Dimension(600, 1000));
-    
+    setVisible(true);    
     sketch = new Sketch(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
 
         }
       }, this);
-    sketchContainer = new PAppletContainer(sketch);
     
-    sketchControl = new SketchControlPanel(sketch);
+    new PAppletContainer(sketch);
+    
+    sketchControl = new SketchControlPanel(sketch, this);
     add(sketchControl, BorderLayout.CENTER);
     pack();
   }

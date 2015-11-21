@@ -1,7 +1,5 @@
 package com.rattyduck.viz;
 
-import javax.swing.JPanel;
-
 import ddf.minim.AudioSource;
 import processing.core.PGraphics;
 

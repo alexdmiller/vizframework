@@ -5,13 +5,14 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.rattyduck.viz.Sketch;
 
 public class SketchControlPanel extends JPanel {
-  public SketchControlPanel(Sketch sketch) {
-    setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+  public SketchControlPanel(Sketch sketch, JFrame frame) {
+    setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
     
     JButton saveStage = new JButton("Save");
     saveStage.addActionListener(new ActionListener() {
@@ -22,7 +23,7 @@ public class SketchControlPanel extends JPanel {
     });
     add(saveStage);
     
-    StageControlPanel stagePanel = new StageControlPanel(sketch.getStage(), null);
+    StageControlPanel stagePanel = new StageControlPanel(sketch.getStage(), frame);
     add(stagePanel);
   }
 }

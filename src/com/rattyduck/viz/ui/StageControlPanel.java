@@ -2,9 +2,11 @@ package com.rattyduck.viz.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,7 +27,11 @@ public class StageControlPanel extends JPanel implements SceneChangeListener {
     stage.addSceneChangeListener(this);
     
     setSize(new Dimension(100, 100));
-    setLayout(new BorderLayout());
+    setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+    
+    
+    JPanel stageControls = new JPanel();
+    stageControls.setLayout(new FlowLayout());
 
     JButton prev = new JButton("Previous");
     prev.addActionListener(new ActionListener() {
@@ -34,7 +40,7 @@ public class StageControlPanel extends JPanel implements SceneChangeListener {
         stage.prevScene();
       }
     });
-    add(prev, BorderLayout.WEST);
+    stageControls.add(prev);
     
     JButton restart = new JButton("Restart");
     restart.addActionListener(new ActionListener() {
@@ -43,7 +49,7 @@ public class StageControlPanel extends JPanel implements SceneChangeListener {
         stage.restartCurrentScene();
       }
     });
-    add(restart, BorderLayout.CENTER);
+    stageControls.add(restart);
         
     JButton next = new JButton("Next");
     next.addActionListener(new ActionListener() {
@@ -52,17 +58,21 @@ public class StageControlPanel extends JPanel implements SceneChangeListener {
         stage.nextScene();
       }
     });
-    add(next, BorderLayout.EAST);
+    stageControls.add(next);
+    
+    add(stageControls);
   }
   
   @Override
   public void sceneChanged() {
+    System.out.println("SCENE CHANGED");
     if (sceneControl != null) {
       remove(sceneControl);
     }
     sceneControl = new SceneControlPanel(stage.getCurrentScene());
-    add(sceneControl, BorderLayout.SOUTH);
+    add(sceneControl);
     repaint();
-    //frame.pack();
+    revalidate();
+    frame.pack();
   }
 }

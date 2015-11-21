@@ -1,12 +1,14 @@
 {
-  "@id":189,
+  "@id":207,
   "@type":"com.rattyduck.viz.Stage",
   "scenes":{
     "@type":"java.util.ArrayList",
     "@items":[
       {
+        "@id":1318,
         "@type":"com.rattyduck.viz.scenes.FlockingScene",
         "numBoids":{
+          "@id":316,
           "min":10.0,
           "max":2000.0,
           "name":"Boid count",
@@ -16,16 +18,19 @@
           }
         },
         "boids":{
+          "@id":2,
           "maxSpeed":{
+            "@id":299,
             "min":0.0,
             "max":10.0,
             "name":"Max speed",
             "value":{
               "@type":"float",
-              "value":4.4
+              "value":4.0
             }
           },
           "maxSteerForce":{
+            "@id":282,
             "min":0.0,
             "max":1.0,
             "name":"Max steer force",
@@ -35,6 +40,7 @@
             }
           },
           "neighborhoodRadius":{
+            "@id":265,
             "min":0.0,
             "max":1000.0,
             "name":"Neighborhood radius",
@@ -44,15 +50,17 @@
             }
           },
           "separationWeight":{
+            "@id":238,
             "min":0.0,
             "max":20.0,
             "name":"Separation",
             "value":{
               "@type":"float",
-              "value":2.0
+              "value":1.0
             }
           },
           "cohesionWeight":{
+            "@id":342,
             "min":0.0,
             "max":20.0,
             "name":"Cohesion",
@@ -62,6 +70,7 @@
             }
           },
           "alignmentWeight":{
+            "@id":957,
             "min":0.0,
             "max":20.0,
             "name":"Alignment",
@@ -71,6 +80,7 @@
             }
           },
           "avoidWeight":{
+            "@id":970,
             "min":0.0,
             "max":20.0,
             "name":"Wall avoidance",

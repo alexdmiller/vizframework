@@ -1,34 +1,20 @@
 package com.rattyduck.viz;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import com.cedarsoftware.util.io.JsonReader;
 import com.cedarsoftware.util.io.JsonWriter;
-import com.rattyduck.viz.scenes.FlockingScene;
-import com.rattyduck.viz.scenes.HyperSpaceScene;
-import com.rattyduck.viz.scenes.LatticeScene;
 import com.rattyduck.viz.scenes.SetupScene;
-import com.rattyduck.viz.scenes.SpinningStarScene;
-import com.rattyduck.viz.ui.StageControlPanel;
 
 import codeanticode.syphon.SyphonServer;
-import ddf.minim.AudioPlayer;
 import ddf.minim.AudioSource;
 import ddf.minim.Minim;
 import processing.core.PApplet;
@@ -41,7 +27,6 @@ public class Sketch extends PApplet {
   private static final String STAGE_FILENAME = "stage.json";
 
   private Stage stage;
-  private JFrame frame;
   private AudioSource audio;
   private ActionListener setupListener;
   private boolean recording;
